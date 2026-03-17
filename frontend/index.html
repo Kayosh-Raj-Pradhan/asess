@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASESS | Advanced Eye Screening</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+</head>
+<body class="bg-home">
+    <div id="main-wrapper">
+        <div id="header-placeholder"></div>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <img src="/static/assets/images/logo.png" alt="ASESS Logo" class="hero-logo">
+                <h1>Advanced Eye Screening</h1>
+                <p class="hero-tagline">High-precision AI analysis for detecting anterior segment conditions in seconds.</p>
+                <div class="hero-actions">
+                    <a href="/static/capture.html" class="btn btn-primary">Start New Scan</a>
+                    <a href="/static/history.html" class="btn btn-outline">View History</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <main class="dashboard-main">
+            <section class="card">
+                <h2>Welcome, <span id="userName">...</span></h2>
+                <p class="muted">You are logged in as <strong id="userRole">...</strong> (<span id="userEmail">...</span>)</p>
+            </section>
+
+            <section class="card">
+                <h3>Your Account</h3>
+                <ul class="info-list">
+                    <li><strong>Full name:</strong> <span class="userName">...</span></li>
+                    <li><strong>Email:</strong> <span id="userEmail2">...</span></li>
+                    <li><strong>Role:</strong> <span id="userRole2">...</span></li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h3>Quick Actions</h3>
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;">
+                    <a href="/static/capture.html" class="btn btn-primary">New Scan</a>
+                    <a href="/static/history.html" class="btn btn-primary">View History</a>
+                    <a href="/static/insights.html" class="btn btn-primary">Insights</a>
+                    <a href="/users/dashboard" class="btn btn-primary" id="adminPanelBtn" style="display:none;">Admin Panel</a>
+                    <button id="logoutBtn" class="btn" style="background:#dc2626; color:#fff;">Logout</button>
+                </div>
+            </section>
+        </main>
+
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/toast.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

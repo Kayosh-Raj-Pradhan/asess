@@ -1,0 +1,22 @@
+/* ===== Dashboard Page ===== */
+
+.dashboard-main {
+    max-width: 980px;
+    margin: 24px auto;
+    padding: 0 18px;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-list li {
+    margin-bottom: 8px;
+    color: var(--card-para, #abd1c6);
+}
+
+.info-list li strong {
+    color: var(--card-head, #fffffe);
+}

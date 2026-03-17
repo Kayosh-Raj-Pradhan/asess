@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ASESS</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+</head>
+<body class="auth-bg">
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Register Account</h2>
+            <p class="subtitle">Join the ASESS clinical network</p>
+
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="fullName" placeholder="Dr. John Smith" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="janesmith123" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Work Email</label>
+                    <input type="email" id="email" placeholder="name@clinic.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Create Password</label>
+                    <input type="password" id="password" placeholder="Minimum 8 characters" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="role" required>
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="staff">Staff</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <p class="terms">
+                    By registering, you agree to the ASESS Medical Data Privacy Terms and HIPPA compliance standards.
+                </p>
+
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+
+            <p class="footer-text">Already have an account? <a href="/users/login">Log in here</a></p>
+        </div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/toast.js"></script>
+    <script src="/static/js/auth.js"></script>
+</body>
+</html>

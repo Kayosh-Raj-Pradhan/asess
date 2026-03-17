@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASESS | General Eye Test</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body class="bg-eyetest">
+    <div id="main-wrapper">
+        <div id="header-placeholder"></div>
+
+        <div class="container page-container">
+            <h2 style="text-align:center; margin-bottom:8px;">General Eye Screening</h2>
+            <p style="text-align:center; margin-bottom:28px; color:var(--subhead);">Interactive vision tests with instant report generation</p>
+
+            <!-- Patient Name -->
+            <div class="card" id="patientCard">
+                <h3>Patient Information</h3>
+                <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
+                    <div style="flex:1; min-width:200px;">
+                        <label style="display:block; margin-bottom:6px; color:var(--card-para); font-weight:600; font-size:0.85rem;">Patient Name</label>
+                        <input type="text" id="patientName" placeholder="Enter patient name" style="width:100%; padding:10px 12px; border:1px solid rgba(171,209,198,0.25); border-radius:8px; background:rgba(0,30,29,0.4); color:var(--card-head); font-size:0.95rem;">
+                    </div>
+                    <button class="btn btn-primary" id="startTestsBtn" style="padding:10px 28px;">Start Tests</button>
+                </div>
+            </div>
+
+            <!-- Test Area (hidden until started) -->
+            <div id="testArea" style="display:none;">
+                <!-- Progress -->
+                <div class="card" style="padding:16px 28px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="color:var(--card-head); font-weight:600;" id="testTitle">Test 1 of 3</span>
+                        <div class="test-progress" id="progressDots"></div>
+                    </div>
+                </div>
+
+                <!-- Test 1: Ishihara Color Blind -->
+                <div class="card test-panel" id="test-ishihara">
+                    <h3>Ishihara Color Blindness Test</h3>
+                    <p style="margin-bottom:16px;">What number do you see in the image below?</p>
+                    <div class="test-layout">
+                        <div>
+                            <div class="test-image-wrap" id="ishiharaPlate" style="background:#f5f0e8; border-radius:50%; width:260px; height:260px; overflow:hidden; margin:0 auto 16px;">
+                                <img id="ishiharaImg" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" alt="Ishihara Plate">
+                            </div>
+                            <p style="text-align:center; color:var(--card-para); font-size:0.85rem; margin-bottom:12px;">Plate <strong id="plateCounter">1</strong> of 6</p>
+                            <div class="test-options" id="ishiharaOpts" style="justify-content:center;"></div>
+                        </div>
+                        <div class="card" style="background:rgba(0,30,29,0.3); border:none; box-shadow:none;">
+                            <h3 style="font-size:0.95rem;">Results</h3>
+                            <div id="ishiharaResults" style="color:var(--card-para); font-size:0.9rem;">Answer all plates to see results.</div>
+                        </div>
+                    </div>
+                    <div style="text-align:right; margin-top:16px;">
+                        <button class="btn btn-primary" id="ishiharaNext">Next Test →</button>
+                    </div>
+                </div>
+
+                <!-- Test 2: Snellen Visual Acuity -->
+                <div class="card test-panel" id="test-snellen" style="display:none;">
+                    <h3>👁️ Visual Acuity Test (Snellen)</h3>
+                    <p style="margin-bottom:16px;">Read the letters displayed below. Sit ~40cm from screen.</p>
+                    <div class="test-layout">
+                        <div>
+                            <div class="snellen-letter" id="snellenDisplay">E</div>
+                            <div style="margin-bottom:12px;">
+                                <label style="color:var(--card-para); font-weight:600; font-size:0.85rem;">Type what you see:</label>
+                                <input type="text" id="snellenInput" maxlength="10" style="width:100%; padding:10px; margin-top:6px; border:1px solid rgba(171,209,198,0.25); border-radius:8px; background:rgba(0,30,29,0.4); color:var(--card-head); font-size:1.1rem; text-transform:uppercase; letter-spacing:0.2em;">
+                            </div>
+                            <button class="btn btn-primary" id="snellenSubmit" style="width:100%;">Submit Answer</button>
+                        </div>
+                        <div class="card" style="background:rgba(0,30,29,0.3); border:none; box-shadow:none;">
+                            <h3 style="font-size:0.95rem;">Results</h3>
+                            <div id="snellenResults" style="color:var(--card-para); font-size:0.9rem;">Complete all rows to see results.</div>
+                        </div>
+                    </div>
+                    <div style="text-align:right; margin-top:16px;">
+                        <button class="btn btn-primary" id="snellenNext">Next Test →</button>
+                    </div>
+                </div>
+
+                <!-- Test 3: Contrast Sensitivity -->
+                <div class="card test-panel" id="test-contrast" style="display:none;">
+                    <h3>🌗 Contrast Sensitivity Test</h3>
+                    <p style="margin-bottom:16px;">Can you see the letter in the box below? Answer Yes or No for each level.</p>
+                    <div class="test-layout">
+                        <div>
+                            <div class="contrast-box" id="contrastDisplay" style="background:#111; color:rgba(255,255,255,0.5);">C</div>
+                            <div class="test-options">
+                                <button class="test-opt-btn" onclick="contrastAnswer(true)">✅ Yes, I can see it</button>
+                                <button class="test-opt-btn" onclick="contrastAnswer(false)">❌ No, I can't see it</button>
+                            </div>
+                            <p style="color:var(--card-para); font-size:0.85rem; margin-top:8px;">Level: <strong id="contrastLevel">1</strong> / 8</p>
+                        </div>
+                        <div class="card" style="background:rgba(0,30,29,0.3); border:none; box-shadow:none;">
+                            <h3 style="font-size:0.95rem;">Results</h3>
+                            <div id="contrastResults" style="color:var(--card-para); font-size:0.9rem;">Complete all levels to see results.</div>
+                        </div>
+                    </div>
+                    <div style="text-align:right; margin-top:16px;">
+                        <button class="btn btn-primary" id="contrastNext">Generate Report →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report (hidden until all tests complete) -->
+            <div id="reportSection" style="display:none;">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                        <h2 style="margin:0;">📋 Eye Test Report</h2>
+                        <button class="btn btn-primary" onclick="window.print()" style="padding:8px 20px; font-size:0.9rem;">🖨️ Print Report</button>
+                    </div>
+                    <div class="detail-row"><span class="detail-label">Patient Name</span><span class="detail-value" id="rptName">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Date</span><span class="detail-value" id="rptDate">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Screened By</span><span class="detail-value" id="rptDoctor">—</span></div>
+                </div>
+
+                <div class="card">
+                    <h3>1. Color Vision (Ishihara)</h3>
+                    <div id="rptIshihara" style="color:var(--card-para);"></div>
+                </div>
+                <div class="card">
+                    <h3>2. Visual Acuity (Snellen)</h3>
+                    <div id="rptSnellen" style="color:var(--card-para);"></div>
+                </div>
+                <div class="card">
+                    <h3>3. Contrast Sensitivity</h3>
+                    <div id="rptContrast" style="color:var(--card-para);"></div>
+                </div>
+                <div class="card">
+                    <h3>Overall Assessment</h3>
+                    <div id="rptOverall" style="color:var(--card-para);"></div>
+                </div>
+                <div class="card">
+                    <h3>Doctor's Notes</h3>
+                    <div class="notes-label"><span>📝</span> <span id="notesAccessLabel">Only doctors can add notes</span></div>
+                    <textarea class="notes-area" id="doctorNotes" placeholder="Add clinical observations, recommendations..." disabled></textarea>
+                    <button class="btn btn-primary" id="saveNotesBtn" style="margin-top:12px; display:none; padding:8px 24px; font-size:0.9rem;">Save Notes</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/toast.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script>
+    // ===== Eye Test Engine =====
+    const TESTS = ['ishihara', 'snellen', 'contrast'];
+    let currentTest = 0;
+    const results = { ishihara: {}, snellen: {}, contrast: {} };
+    let userRole = 'staff';
+    let userName = '';
+
+    // Auth check & role
+    (async () => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            try {
+                const u = await apiRequest('/users/me', 'GET');
+                userRole = u.role;
+                userName = u.full_name || u.username;
+            } catch(e) {}
+        }
+    })();
+
+    document.getElementById('startTestsBtn').addEventListener('click', () => {
+        const pn = document.getElementById('patientName').value.trim();
+        if (!pn) { showToast('Please enter patient name', 'warning'); return; }
+        document.getElementById('testArea').style.display = 'block';
+        document.getElementById('patientCard').style.display = 'none';
+        buildProgress();
+        initIshihara();
+        window.scrollTo({ top: document.getElementById('testArea').offsetTop - 80, behavior: 'smooth' });
+    });
+
+    function buildProgress() {
+        const d = document.getElementById('progressDots');
+        d.innerHTML = '';
+        TESTS.forEach((t, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'test-dot' + (i === 0 ? ' active' : '');
+            dot.id = 'dot-' + i;
+            d.appendChild(dot);
+        });
+        updateTitle();
+    }
+    function updateTitle() {
+        document.getElementById('testTitle').textContent = `Test ${currentTest + 1} of ${TESTS.length}`;
+    }
+    function goToTest(idx) {
+        document.querySelectorAll('.test-panel').forEach(p => p.style.display = 'none');
+        document.getElementById('test-' + TESTS[idx]).style.display = 'block';
+        document.querySelectorAll('.test-dot').forEach((d, i) => {
+            d.className = 'test-dot' + (i < idx ? ' done' : '') + (i === idx ? ' active' : '');
+        });
+        currentTest = idx;
+        updateTitle();
+    }
+
+    // ===== Ishihara (Real Plate Images) =====
+    const ishiharaPlates = [
+        { number: '12', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Ishihara_1.svg/220px-Ishihara_1.svg.png' },
+        { number: '8',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Ishihara_2.svg/220px-Ishihara_2.svg.png' },
+        { number: '6',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Ishihara_3.svg/220px-Ishihara_3.svg.png' },
+        { number: '29', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Ishihara_4.svg/220px-Ishihara_4.svg.png' },
+        { number: '57', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ishihara_5.svg/220px-Ishihara_5.svg.png' },
+        { number: '45', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Ishihara_9.svg/220px-Ishihara_9.svg.png' },
+    ];
+    let ishPlateIdx = 0;
+    let ishCorrect = 0;
+
+    function initIshihara() {
+        ishPlateIdx = 0; ishCorrect = 0;
+        showIshiharaPlate();
+        renderIshiharaOpts();
+    }
+    function showIshiharaPlate() {
+        const plate = ishiharaPlates[ishPlateIdx];
+        document.getElementById('ishiharaImg').src = plate.img;
+        document.getElementById('plateCounter').textContent = ishPlateIdx + 1;
+    }
+    function renderIshiharaOpts() {
+        const plate = ishiharaPlates[ishPlateIdx];
+        const opts = [plate.number];
+        while (opts.length < 4) {
+            const n = String(Math.floor(Math.random() * 80) + 1);
+            if (!opts.includes(n)) opts.push(n);
+        }
+        opts.sort(() => Math.random() - 0.5);
+        const container = document.getElementById('ishiharaOpts');
+        container.innerHTML = '';
+        opts.forEach(o => {
+            const btn = document.createElement('button');
+            btn.className = 'test-opt-btn';
+            btn.textContent = o;
+            btn.onclick = () => ishiharaSelect(o, plate.number, btn);
+            container.appendChild(btn);
+        });
+    }
+    function ishiharaSelect(chosen, correct, btn) {
+        document.querySelectorAll('#ishiharaOpts .test-opt-btn').forEach(b => b.disabled = true);
+        if (chosen === correct) {
+            btn.classList.add('correct'); ishCorrect++;
+        } else {
+            btn.classList.add('wrong');
+            document.querySelectorAll('#ishiharaOpts .test-opt-btn').forEach(b => { if(b.textContent===correct) b.classList.add('correct'); });
+        }
+        setTimeout(() => {
+            ishPlateIdx++;
+            if (ishPlateIdx < ishiharaPlates.length) {
+                showIshiharaPlate(); renderIshiharaOpts();
+            } else {
+                const pct = Math.round((ishCorrect / ishiharaPlates.length) * 100);
+                const status = pct >= 80 ? '<span class="text-success">Normal Color Vision</span>' : '<span class="text-danger">Possible Color Deficiency</span>';
+                results.ishihara = { correct: ishCorrect, total: ishiharaPlates.length, pct, status: pct >= 80 ? 'Normal' : 'Deficient' };
+                document.getElementById('ishiharaResults').innerHTML = `Score: ${ishCorrect}/${ishiharaPlates.length} (${pct}%) — ${status}`;
+                document.getElementById('ishiharaImg').style.display = 'none';
+                document.getElementById('ishiharaPlate').innerHTML = '<p style="color:#4ade80; font-weight:700; font-size:1.2rem;">✓ Complete</p>';
+            }
+        }, 1000);
+    }
+    document.getElementById('ishiharaNext').onclick = () => goToTest(1);
+
+    // ===== Snellen =====
+    const snellenRows = [
+        { letters: 'E', size: '5rem', acuity: '20/200' },
+        { letters: 'FP', size: '3.5rem', acuity: '20/100' },
+        { letters: 'TOZ', size: '2.5rem', acuity: '20/70' },
+        { letters: 'LPED', size: '2rem', acuity: '20/50' },
+        { letters: 'PECFD', size: '1.5rem', acuity: '20/40' },
+        { letters: 'EDFCZP', size: '1.1rem', acuity: '20/25' },
+        { letters: 'FELOPZD', size: '0.85rem', acuity: '20/20' },
+    ];
+    let snellenIdx = 0, snellenLastCorrect = '20/200';
+
+    function showSnellen() {
+        const row = snellenRows[snellenIdx];
+        const d = document.getElementById('snellenDisplay');
+        d.textContent = row.letters;
+        d.style.fontSize = row.size;
+        document.getElementById('snellenInput').value = '';
+        document.getElementById('snellenInput').focus();
+    }
+    showSnellen();
+
+    document.getElementById('snellenSubmit').onclick = () => {
+        const input = document.getElementById('snellenInput').value.trim().toUpperCase();
+        const row = snellenRows[snellenIdx];
+        if (input === row.letters) {
+            snellenLastCorrect = row.acuity;
+            showToast(`Correct! Acuity: ${row.acuity}`, 'success');
+        } else {
+            showToast(`Incorrect. The letters were: ${row.letters}`, 'error');
+        }
+        snellenIdx++;
+        if (snellenIdx < snellenRows.length) {
+            showSnellen();
+        } else {
+            const isGood = ['20/20', '20/25'].includes(snellenLastCorrect);
+            results.snellen = { acuity: snellenLastCorrect, status: isGood ? 'Normal' : 'Below Normal' };
+            document.getElementById('snellenResults').innerHTML = `Best Acuity: <strong>${snellenLastCorrect}</strong> — <span class="${isGood ? 'text-success' : 'text-warning'}">${results.snellen.status}</span>`;
+            document.getElementById('snellenDisplay').textContent = 'Test Complete';
+            document.getElementById('snellenDisplay').style.fontSize = '1.5rem';
+        }
+    };
+    document.getElementById('snellenInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('snellenSubmit').click(); });
+    document.getElementById('snellenNext').onclick = () => goToTest(2);
+
+    // ===== Contrast Sensitivity =====
+    let contrastLvl = 0;
+    const contrastLevels = [0.5, 0.35, 0.25, 0.18, 0.12, 0.08, 0.05, 0.03];
+    const contrastLetters = ['C', 'O', 'D', 'E', 'Z', 'S', 'N', 'K'];
+    let contrastLastSeen = 0;
+
+    function showContrast() {
+        const d = document.getElementById('contrastDisplay');
+        d.style.color = `rgba(255,255,255,${contrastLevels[contrastLvl]})`;
+        d.textContent = contrastLetters[contrastLvl];
+        document.getElementById('contrastLevel').textContent = (contrastLvl + 1);
+    }
+    showContrast();
+
+    function contrastAnswer(canSee) {
+        if (canSee) contrastLastSeen = contrastLvl + 1;
+        contrastLvl++;
+        if (contrastLvl < contrastLevels.length) {
+            showContrast();
+        } else {
+            const pct = Math.round((contrastLastSeen / contrastLevels.length) * 100);
+            const status = contrastLastSeen >= 5 ? 'Normal' : contrastLastSeen >= 3 ? 'Mild Reduction' : 'Significant Reduction';
+            results.contrast = { levelsDetected: contrastLastSeen, total: contrastLevels.length, pct, status };
+            document.getElementById('contrastResults').innerHTML = `Detected ${contrastLastSeen}/${contrastLevels.length} levels (${pct}%) — <span class="${contrastLastSeen >= 5 ? 'text-success' : 'text-warning'}">${status}</span>`;
+            document.getElementById('contrastDisplay').textContent = '✓';
+            document.getElementById('contrastDisplay').style.color = '#4ade80';
+        }
+    }
+
+    document.getElementById('contrastNext').onclick = () => generateReport();
+
+    // ===== Report =====
+    function generateReport() {
+        document.querySelectorAll('.test-dot').forEach(d => d.classList.add('done'));
+        document.getElementById('testArea').style.display = 'none';
+        document.getElementById('reportSection').style.display = 'block';
+
+        const pName = document.getElementById('patientName').value.trim();
+        document.getElementById('rptName').textContent = pName;
+        document.getElementById('rptDate').textContent = new Date().toLocaleDateString();
+        document.getElementById('rptDoctor').textContent = userName || 'Unknown';
+
+        // Ishihara
+        const ish = results.ishihara;
+        document.getElementById('rptIshihara').innerHTML = ish.correct !== undefined
+            ? `<p>Plates Correct: <strong>${ish.correct}/${ish.total}</strong> (${ish.pct}%)</p><p>Status: <strong class="${ish.status==='Normal'?'text-success':'text-danger'}">${ish.status}</strong></p>`
+            : '<p class="text-warning">Test not completed</p>';
+
+        // Snellen
+        const sn = results.snellen;
+        document.getElementById('rptSnellen').innerHTML = sn.acuity
+            ? `<p>Best Acuity: <strong>${sn.acuity}</strong></p><p>Status: <strong class="${sn.status==='Normal'?'text-success':'text-warning'}">${sn.status}</strong></p>`
+            : '<p class="text-warning">Test not completed</p>';
+
+        // Contrast
+        const ct = results.contrast;
+        document.getElementById('rptContrast').innerHTML = ct.levelsDetected !== undefined
+            ? `<p>Levels Detected: <strong>${ct.levelsDetected}/${ct.total}</strong> (${ct.pct}%)</p><p>Status: <strong class="${ct.status==='Normal'?'text-success':'text-warning'}">${ct.status}</strong></p>`
+            : '<p class="text-warning">Test not completed</p>';
+
+        // Overall
+        const issues = [];
+        if (ish.status === 'Deficient') issues.push('Color vision deficiency detected');
+        if (sn.status === 'Below Normal') issues.push('Reduced visual acuity (' + sn.acuity + ')');
+        if (ct.status !== 'Normal') issues.push('Contrast sensitivity: ' + ct.status);
+        document.getElementById('rptOverall').innerHTML = issues.length === 0
+            ? '<p class="text-success" style="font-weight:700;">All tests within normal range. No immediate concerns detected.</p>'
+            : '<ul style="padding-left:20px;">' + issues.map(i => '<li class="text-warning" style="margin-bottom:6px;">' + i + '</li>').join('') + '</ul><p style="margin-top:12px;">Recommend follow-up with an ophthalmologist for further evaluation.</p>';
+
+        // Doctor notes access
+        if (userRole === 'doctor' || userRole === 'admin') {
+            document.getElementById('doctorNotes').disabled = false;
+            document.getElementById('saveNotesBtn').style.display = 'inline-block';
+            document.getElementById('notesAccessLabel').textContent = 'Add your clinical observations';
+        } else {
+            document.getElementById('notesAccessLabel').textContent = 'Only doctors can add notes (read-only)';
+        }
+
+        document.getElementById('saveNotesBtn').onclick = () => {
+            // Update saved entry with notes
+            const history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
+            const lastEntry = history[history.length - 1];
+            if (lastEntry) {
+                lastEntry.doctorNotes = document.getElementById('doctorNotes').value;
+                localStorage.setItem('eyeTestHistory', JSON.stringify(history));
+            }
+            showToast('Notes saved successfully', 'success');
+        };
+
+        // Save to localStorage
+        const testEntry = {
+            id: Date.now(),
+            patientName: pName,
+            date: new Date().toLocaleDateString(),
+            screenedBy: userName || 'Unknown',
+            ishihara: results.ishihara,
+            snellen: results.snellen,
+            contrast: results.contrast,
+            overallStatus: issues.length === 0 ? 'Normal' : 'Issues Found',
+            overallIssues: issues,
+            doctorNotes: ''
+        };
+        const history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
+        history.push(testEntry);
+        localStorage.setItem('eyeTestHistory', JSON.stringify(history));
+
+        showToast('Report generated & saved to history', 'success');
+        window.scrollTo({ top: document.getElementById('reportSection').offsetTop - 80, behavior: 'smooth' });
+    }
+    </script>
+</body>
+</html>

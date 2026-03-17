@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASESS | Capture Eye Image</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body class="bg-capture">
+    <div id="main-wrapper">
+        <div id="header-placeholder"></div>
+
+        <div class="container page-container">
+            <h2 style="text-align:center; color:#1a2740; margin-bottom:28px; font-size:1.6rem;">Capture Eye Image</h2>
+
+            <div class="capture-layout">
+                <!-- Left Column -->
+                <div>
+                    <!-- Upload Box -->
+                    <div class="card" style="padding:24px;">
+                        <h3 style="margin-bottom:16px;">Upload</h3>
+                        <div class="upload-box" id="uploadArea">
+                            <div class="upload-icon-img">📁</div>
+                            <p>Click to Upload</p>
+                            <input type="file" id="imageInput" accept="image/*" hidden>
+                        </div>
+                    </div>
+
+                    <!-- Webcam Box -->
+                    <div class="card webcam-box" style="margin-top:20px; text-align:center;">
+                        <h3 style="text-align:left;">Webcam</h3>
+                        <video id="webcamVideo" autoplay playsinline style="margin:0 auto;"></video>
+                        <canvas id="webcamCanvas"></canvas>
+                        <div style="display:flex; gap:10px; margin-top:12px; justify-content:center;">
+                            <button class="btn btn-primary" id="startCamBtn">Start Camera</button>
+                            <button class="btn btn-primary" id="captureCamBtn" style="display:none;">Capture</button>
+                            <button class="btn btn-primary" id="stopCamBtn" style="display:none; background:#dc2626;">Stop</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column – Preview -->
+                <div class="card preview-card">
+                    <h3>Image Preview</h3>
+                    <div class="preview-placeholder" id="previewPlaceholder">No image selected</div>
+                    <img class="captured-img" id="imagePreview" style="display:none;" alt="Preview">
+                    <div class="analyze-btn-wrap">
+                        <button class="btn btn-primary" id="analyzeBtn" style="width:100%; max-width:300px;">Analyze Condition</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/toast.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const imagePreview = document.getElementById('imagePreview');
+        const webcamVideo = document.getElementById('webcamVideo');
+        const webcamCanvas = document.getElementById('webcamCanvas');
+        const startCamBtn = document.getElementById('startCamBtn');
+        const captureCamBtn = document.getElementById('captureCamBtn');
+        const stopCamBtn = document.getElementById('stopCamBtn');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        let stream = null;
+
+        // Upload
+        uploadArea.addEventListener('click', () => imageInput.click());
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault(); uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) { imageInput.files = e.dataTransfer.files; showPreview(e.dataTransfer.files[0]); }
+        });
+        imageInput.addEventListener('change', () => { if (imageInput.files.length) showPreview(imageInput.files[0]); });
+
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                previewPlaceholder.style.display = 'none';
+                showToast("Image loaded successfully", "success");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Webcam
+        startCamBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                webcamVideo.srcObject = stream;
+                webcamVideo.style.display = 'block';
+                startCamBtn.style.display = 'none';
+                captureCamBtn.style.display = 'inline-block';
+                stopCamBtn.style.display = 'inline-block';
+            } catch (err) {
+                showToast("Could not access camera: " + err.message, "error");
+            }
+        });
+        captureCamBtn.addEventListener('click', () => {
+            webcamCanvas.width = webcamVideo.videoWidth;
+            webcamCanvas.height = webcamVideo.videoHeight;
+            webcamCanvas.getContext('2d').drawImage(webcamVideo, 0, 0);
+            imagePreview.src = webcamCanvas.toDataURL('image/png');
+            imagePreview.style.display = 'block';
+            previewPlaceholder.style.display = 'none';
+            showToast("Image captured from webcam", "success");
+        });
+        stopCamBtn.addEventListener('click', () => {
+            if (stream) stream.getTracks().forEach(t => t.stop());
+            webcamVideo.style.display = 'none';
+            startCamBtn.style.display = 'inline-block';
+            captureCamBtn.style.display = 'none';
+            stopCamBtn.style.display = 'none';
+        });
+
+        // Analyze
+        analyzeBtn.addEventListener('click', () => {
+            if (!imagePreview.src || imagePreview.style.display === 'none') {
+                showToast("Please select or capture an image first", "warning");
+                return;
+            }
+            showToast("Analysis started... (demo)", "info");
+            setTimeout(() => {
+                showToast("Process successful", "success");
+                setTimeout(() => { window.location.href = "/static/report.html"; }, 1000);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+/* ===== Auth Pages (Login & Register) ===== */
+
+body.auth-bg {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: linear-gradient(rgba(10,25,47,0.85), rgba(10,25,47,0.95)),
+                url('https://wallpaperaccess.com/full/3275630.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--card-bg, #004643);
+    border: 1px solid rgba(171, 209, 198, 0.2);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.auth-card h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    color: var(--card-head, #fffffe);
+    margin-bottom: 4px;
+}
+
+.auth-card .subtitle {
+    text-align: center;
+    color: var(--card-para, #abd1c6);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--card-para, #abd1c6);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(171, 209, 198, 0.25);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: rgba(0, 30, 29, 0.5);
+    color: var(--card-head, #fffffe);
+    transition: border-color 0.2s;
+}
+
+.form-group input::placeholder {
+    color: rgba(171, 209, 198, 0.45);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--highlight, #f9bc60);
+}
+
+.form-group select option {
+    background: #004643;
+    color: #fffffe;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: var(--button, #f9bc60);
+    color: var(--btn-text, #001e1d);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background: #e5a94f;
+    transform: translateY(-1px);
+}
+
+.terms {
+    font-size: 0.75rem;
+    color: rgba(171, 209, 198, 0.5);
+    margin: 16px 0;
+    line-height: 1.4;
+}
+
+.footer-text {
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--card-para, #abd1c6);
+    margin-top: 20px;
+}
+
+.footer-text a {
+    color: var(--highlight, #f9bc60);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-text a:hover { text-decoration: underline; }

@@ -1,0 +1,48 @@
+/* ===== Admin Panel Styles ===== */
+
+.admin-table th {
+    background: rgba(171,209,198,0.08);
+    font-size: 0.8rem;
+    color: var(--card-para);
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 0.03em;
+}
+
+/* Yellow shades for each role */
+.role-admin  { background: rgba(249,188,96,0.2);  color: #f9bc60; }
+.role-doctor { background: rgba(230,169,79,0.2);  color: #e6a94f; }
+.role-staff  { background: rgba(210,175,100,0.2); color: #d2af64; }
+
+.action-cell {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+.btn-sm:hover { opacity: 0.85; }
+
+.btn-edit {
+    background: var(--highlight);
+    color: var(--btn-text);
+}
+
+.btn-delete {
+    background: var(--tertiary);
+    color: #fff;
+}

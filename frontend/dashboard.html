@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - ASESS</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/pages.css" />
+    <link rel="stylesheet" href="/static/css/dashboard.css" />
+    <link rel="stylesheet" href="/static/css/admin.css" />
+    <link rel="stylesheet" href="/static/css/components.css" />
+</head>
+<body class="bg-dashboard">
+    <div id="main-wrapper">
+        <div id="header-placeholder"></div>
+
+        <main class="dashboard-main">
+            <section class="card">
+                <h2>Admin Panel</h2>
+                <p class="muted">Manage all registered users. Only accessible to administrators.</p>
+            </section>
+
+            <section class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+                    <h3 style="margin:0;">User Management</h3>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-primary" style="padding:8px 20px; font-size:0.9rem; background:#16a34a;" onclick="openCreateUserModal()">+ Create User</button>
+                        <a href="/static/index.html" class="btn btn-primary" style="padding:8px 20px; font-size:0.9rem;">← Back to Dashboard</a>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="history-table admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserTable">
+                            <tr><td colspan="7" style="text-align:center; color:#888;">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/toast.js"></script>
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

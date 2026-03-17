@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASESS | Hospital Analytics</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-insights">
+    <div id="main-wrapper">
+        <div id="header-placeholder"></div>
+
+        <div class="container page-container">
+            <div class="analytics-header">
+                <h2>Hospital Analytics</h2>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="stat-row">
+                <div class="big-stat">
+                    <div class="stat-val blue">1,245</div>
+                    <div class="stat-lbl">Total Scans</div>
+                </div>
+                <div class="big-stat">
+                    <div class="stat-val red">37%</div>
+                    <div class="stat-lbl">Abnormal Cases</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-row">
+                <div class="chart-card">
+                    <h3>Condition Distribution</h3>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="conditionChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Screening Trends</h3>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script>
+        // Condition Distribution – Donut Chart
+        new Chart(document.getElementById('conditionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Conjunctivitis', 'Pterygium', 'Corneal Opacity', 'Uveitis', 'Normal'],
+                datasets: [{
+                    data: [30, 22, 15, 10, 23],
+                    backgroundColor: ['#004643', '#60a5fa', '#f9bc60', '#e16162', '#4ade80'],
+                    borderWidth: 2,
+                    borderColor: '#0a2e2d',
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '55%',
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { boxWidth: 14, padding: 12, font: { size: 12 }, color: '#abd1c6' }
+                    }
+                }
+            }
+        });
+
+        // Screening Trends – Line Chart
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Daily Scans',
+                    data: [45, 60, 52, 68, 70, 30, 20],
+                    borderColor: '#f9bc60',
+                    backgroundColor: 'rgba(249, 188, 96, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#f9bc60',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: false, min: 15, grid: { color: 'rgba(171,209,198,0.1)' }, ticks: { color: '#abd1c6' } },
+                    x: { grid: { display: false }, ticks: { color: '#abd1c6' } }
+                },
+                plugins: {
+                    legend: {
+                        labels: { font: { size: 12 }, color: '#abd1c6' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

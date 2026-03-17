@@ -1,0 +1,46 @@
+/* ===== ASESS Global Reset & Base ===== */
+:root {
+    --bg:         #abd1c6;
+    --bg-dark:    #9cc5b8;
+    --headline:   #001e1d;
+    --subhead:    #0f3433;
+    --paragraph:  #0f3433;
+    --card-bg:    #004643;
+    --card-head:  #fffffe;
+    --card-para:  #abd1c6;
+    --button:     #f9bc60;
+    --btn-text:   #001e1d;
+    --stroke:     #001e1d;
+    --main:       #e8e4e6;
+    --highlight:  #f9bc60;
+    --secondary:  #abd1c6;
+    --tertiary:   #e16162;
+    --success:    #4ade80;
+    --danger:     #e16162;
+    --warning:    #f9bc60;
+    --radius:     12px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--paragraph);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+a { color: var(--card-bg); font-weight: 600; }
+a:hover { color: var(--stroke); }
+
+h1, h2, h3, h4 { color: var(--headline); }
+
+::selection {
+    background: var(--highlight);
+    color: var(--stroke);
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASESS | Scan History</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+</head>
+<body class="bg-history">
+    <div id="main-wrapper">
+        <div id="header-placeholder"></div>
+        <div class="container page-container">
+            <!-- Scan History -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2>Patient Screening History</h2>
+                    <button class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Refresh Records</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Patient Name</th>
+                                <th>Patient ID</th>
+                                <th>Condition</th>
+                                <th>Confidence</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-04-20</td>
+                                <td>Ramesh Sharma</td>
+                                <td>#123456</td>
+                                <td class="text-danger"><strong>Keratoconus</strong></td>
+                                <td>98%</td>
+                                <td class="text-warning">Pending Review</td>
+                                <td><a href="/static/report.html" class="table-action">View Report</a></td>
+                            </tr>
+                            <tr>
+                                <td>2024-04-19</td>
+                                <td>Sita Devi</td>
+                                <td>#123440</td>
+                                <td class="text-success"><strong>Healthy</strong></td>
+                                <td>99%</td>
+                                <td class="text-success">Verified</td>
+                                <td><a href="/static/report.html" class="table-action">View Report</a></td>
+                            </tr>
+                            <tr>
+                                <td>2024-04-18</td>
+                                <td>Hari Prasad</td>
+                                <td>#123412</td>
+                                <td class="text-warning"><strong>Pterygium</strong></td>
+                                <td>92%</td>
+                                <td class="text-warning">Pending Review</td>
+                                <td><a href="/static/report.html" class="table-action">View Report</a></td>
+                            </tr>
+                            <tr>
+                                <td>2024-04-17</td>
+                                <td>Gita Adhikari</td>
+                                <td>#123390</td>
+                                <td class="text-success"><strong>Healthy</strong></td>
+                                <td>97%</td>
+                                <td class="text-success">Verified</td>
+                                <td><a href="/static/report.html" class="table-action">View Report</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Eye Test History -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2>👁️ General Eye Test History</h2>
+                    <a href="/static/test.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">+ New Eye Test</a>
+                </div>
+                <div id="eyeTestHistoryContent">
+                    <p style="color:var(--card-para); text-align:center; padding:20px;">Loading eye test history...</p>
+                </div>
+            </div>
+        </div>
+        <div id="footer-placeholder"></div>
+    </div>
+    <script src="/static/js/script.js"></script>
+    <script>
+        function loadEyeTestHistory() {
+            const container = document.getElementById('eyeTestHistoryContent');
+            const history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
+
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:32px 20px;">
+                        <p style="font-size:2rem; margin-bottom:12px;">🔬</p>
+                        <p style="color:var(--card-para); font-size:0.95rem;">No eye test results yet.</p>
+                        <a href="/static/test.html" class="btn btn-primary" style="margin-top:16px; padding:10px 28px; display:inline-block;">Start First Eye Test</a>
+                    </div>`;
+                return;
+            }
+
+            // Reverse so newest first
+            const sorted = [...history].reverse();
+
+            let tableHtml = `
+                <div style="overflow-x:auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Patient Name</th>
+                                <th>Color Vision</th>
+                                <th>Visual Acuity</th>
+                                <th>Contrast</th>
+                                <th>Overall</th>
+                                <th>Screened By</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+            sorted.forEach(entry => {
+                const ishClass = entry.ishihara.status === 'Normal' ? 'text-success' : 'text-danger';
+                const snClass = entry.snellen.status === 'Normal' ? 'text-success' : 'text-warning';
+                const ctClass = entry.contrast.status === 'Normal' ? 'text-success' : 'text-warning';
+                const overallClass = entry.overallStatus === 'Normal' ? 'text-success' : 'text-warning';
+
+                tableHtml += `
+                    <tr>
+                        <td>${entry.date}</td>
+                        <td><strong>${entry.patientName}</strong></td>
+                        <td class="${ishClass}">${entry.ishihara.status || '—'}</td>
+                        <td class="${snClass}">${entry.snellen.acuity || '—'}</td>
+                        <td class="${ctClass}">${entry.contrast.status || '—'}</td>
+                        <td class="${overallClass}"><strong>${entry.overallStatus}</strong></td>
+                        <td>${entry.screenedBy}</td>
+                        <td><a href="/static/eye-test-report.html?id=${entry.id}" class="table-action">View Report</a></td>
+                    </tr>`;
+            });
+
+            tableHtml += '</tbody></table></div>';
+            container.innerHTML = tableHtml;
+        }
+
+        loadEyeTestHistory();
+    </script>
+</body>
+</html>
