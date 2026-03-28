@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASESS | Scan History</title>
     <meta name="description" content="Browse past eye screening records and eye test results.">
-    <link rel="icon" href="/static/assets/images/logo.png" type="image/png">
+    <link rel="icon" href="/assets/images/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/pages.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
-    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/components.css">
 </head>
 <body class="bg-history">
     <div id="main-wrapper">
@@ -39,7 +39,7 @@
                     <h2><i class="ri-eye-line" style="margin-right:8px;"></i>General Eye Test History</h2>
                     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
                         <input type="text" id="eyeTestSearchInput" class="search-input" placeholder="🔍 Search eye tests..." oninput="filterEyeTestTable()">
-                        <a href="/static/test.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">+ New Eye Test</a>
+                        <a href="/test/" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">+ New Eye Test</a>
                     </div>
                 </div>
                 <div id="eyeTestHistoryContent">
@@ -49,7 +49,8 @@
         </div>
         <div id="footer-placeholder"></div>
     </div>
-    <script src="/static/js/script.js"></script>
+    <script src="/js/toast.js"></script>
+    <script src="/js/script.js"></script>
     <script>
         // ─── AI Scan History (from backend API) ───
         async function loadScanHistory() {
@@ -64,7 +65,7 @@
                         <div style="text-align:center; padding:32px 20px;">
                             <p style="font-size:2rem; margin-bottom:12px;">📷</p>
                             <p style="color:var(--card-para); font-size:0.95rem;">No AI scan records yet.</p>
-                            <a href="/static/capture.html" class="btn btn-primary" style="margin-top:16px; padding:10px 28px; display:inline-block;">Start First Scan</a>
+                            <a href="/capture/" class="btn btn-primary" style="margin-top:16px; padding:10px 28px; display:inline-block;">Start First Scan</a>
                         </div>`;
                     return;
                 }
@@ -88,18 +89,23 @@
 
                 scans.forEach(s => {
                     const date = s.scan_date ? new Date(s.scan_date).toLocaleDateString() : '—';
-                    const condClass = s.prediction === 'Normal' ? 'text-success' : 'text-danger';
-                    const statusClass = s.status === 'Verified' ? 'text-success' : 'text-warning';
+                    const condStyle = s.prediction === 'Normal' ? 'color:#0d9488; font-weight:600;' : 'color:#1565c0; font-weight:600;';
+                    const statusStyle = s.status === 'Verified' ? 'color:#15803d; font-weight:600;' : 'color:#0891b2; font-weight:600;';
                     html += `
-                        <tr>
+                        <tr id="scan-row-${s.id}">
                             <td>${date}</td>
                             <td><strong>${s.patient_name}</strong></td>
                             <td>${s.patient_id || '—'}</td>
-                            <td class="${condClass}"><strong>${s.prediction}</strong></td>
-                            <td>${s.confidence}%</td>
-                            <td class="${statusClass}">${s.status}</td>
-                            <td>${s.screened_by || '—'}</td>
-                            <td><a href="/static/report.html?id=${s.id}" class="table-action">View Report</a></td>
+                            <td style="${condStyle}">${s.prediction}</td>
+                            <td style="color:#1565c0;">${s.confidence}%</td>
+                            <td style="${statusStyle}">${s.status}</td>
+                            <td style="color:#334155;">${s.screened_by || '—'}</td>
+                            <td>
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    <a href="/report?id=${s.id}" style="display:inline-block; padding:6px 16px; background:#0d9488; color:#fff; border-radius:6px; font-size:0.82rem; font-weight:600; text-decoration:none; white-space:nowrap;">View</a>
+                                    <button onclick="confirmDeleteScan(${s.id}, '${s.patient_name.replace(/'/g, "\\'")}', '${s.patient_id || ''}')" style="padding:6px 14px; background:transparent; color:#dc2626; border:1.5px solid #dc2626; border-radius:6px; font-size:0.82rem; font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap;">Delete</button>
+                                </div>
+                            </td>
                         </tr>`;
                 });
 
@@ -117,6 +123,54 @@
 
         loadScanHistory();
 
+        // ─── Delete Scan Confirmation ───
+        function confirmDeleteScan(scanId, patientName, patientId) {
+            // Remove any existing modal
+            const exist = document.getElementById('deleteScanModal');
+            if (exist) exist.remove();
+
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'deleteScanModal';
+            overlay.innerHTML = `
+                <div class="modal-card" style="text-align:center; max-width:420px;">
+                    <div style="font-size:2.5rem; margin-bottom:10px;">🗑️</div>
+                    <h3 style="margin-bottom:8px;">Delete Scan?</h3>
+                    <p style="color:#64748b; margin-bottom:18px; font-size:0.9rem;">This will permanently remove this scan record.</p>
+                    <div style="margin-bottom:20px; padding:12px; background:#fef2f2; border-radius:10px; border:1px solid #fecaca;">
+                        <p style="margin:0; color:#dc2626; font-weight:600; font-size:0.92rem;">${patientName}</p>
+                        <p style="margin:4px 0 0; color:#64748b; font-size:0.82rem;">ID: ${patientId || 'N/A'}</p>
+                    </div>
+                    <p style="color:#ef4444; font-size:0.8rem; margin-bottom:18px; font-weight:500;">This action cannot be undone.</p>
+                    <div style="display:flex; gap:10px; justify-content:center;">
+                        <button onclick="closeDeleteScanModal()" style="padding:10px 24px; background:#f0f4f8; border:1px solid #e2e8f0; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit; color:#475569;">Cancel</button>
+                        <button id="confirmDeleteScanBtn" style="padding:10px 24px; background:#dc2626; color:#fff; border:none; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit;">Delete</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeDeleteScanModal(); });
+
+            document.getElementById('confirmDeleteScanBtn').addEventListener('click', async () => {
+                try {
+                    const resp = await fetch('/ai/scans/' + scanId, { method: 'DELETE' });
+                    if (!resp.ok) { const err = await resp.json(); throw new Error(err.detail || 'Failed'); }
+                    closeDeleteScanModal();
+                    // Remove row with animation
+                    const row = document.getElementById('scan-row-' + scanId);
+                    if (row) { row.style.opacity = '0'; row.style.transition = 'opacity 0.3s'; setTimeout(() => { row.remove(); }, 300); }
+                    showToast('Scan deleted successfully', 'success');
+                } catch (err) {
+                    showToast('Failed to delete: ' + err.message, 'error');
+                }
+            });
+        }
+
+        function closeDeleteScanModal() {
+            const m = document.getElementById('deleteScanModal');
+            if (m) m.remove();
+        }
+
         // ─── Eye Test History (localStorage) ───
         function loadEyeTestHistory() {
             const container = document.getElementById('eyeTestHistoryContent');
@@ -127,7 +181,7 @@
                     <div style="text-align:center; padding:32px 20px;">
                         <p style="font-size:2rem; margin-bottom:12px;">🔬</p>
                         <p style="color:var(--card-para); font-size:0.95rem;">No eye test results yet.</p>
-                        <a href="/static/test.html" class="btn btn-primary" style="margin-top:16px; padding:10px 28px; display:inline-block;">Start First Eye Test</a>
+                        <a href="/test/" class="btn btn-primary" style="margin-top:16px; padding:10px 28px; display:inline-block;">Start First Eye Test</a>
                     </div>`;
                 return;
             }
@@ -151,21 +205,21 @@
                         <tbody>`;
 
             sorted.forEach(entry => {
-                const ishClass = entry.ishihara.status === 'Normal' ? 'text-success' : 'text-danger';
-                const snClass = entry.snellen.status === 'Normal' ? 'text-success' : 'text-warning';
-                const ctClass = entry.contrast.status === 'Normal' ? 'text-success' : 'text-warning';
-                const overallClass = entry.overallStatus === 'Normal' ? 'text-success' : 'text-warning';
+                const ishStyle = entry.ishihara.status === 'Normal' ? 'color:#0d9488; font-weight:600;' : 'color:#1565c0; font-weight:600;';
+                const snStyle = entry.snellen.status === 'Normal' ? 'color:#0d9488; font-weight:600;' : 'color:#1565c0; font-weight:600;';
+                const ctStyle = entry.contrast.status === 'Normal' ? 'color:#0d9488; font-weight:600;' : 'color:#1565c0; font-weight:600;';
+                const overallStyle = entry.overallStatus === 'Normal' ? 'color:#15803d; font-weight:600;' : 'color:#0891b2; font-weight:600;';
 
                 tableHtml += `
                     <tr>
                         <td>${entry.date}</td>
                         <td><strong>${entry.patientName}</strong></td>
-                        <td class="${ishClass}">${entry.ishihara.status || '—'}</td>
-                        <td class="${snClass}">${entry.snellen.acuity || '—'}</td>
-                        <td class="${ctClass}">${entry.contrast.status || '—'}</td>
-                        <td class="${overallClass}"><strong>${entry.overallStatus}</strong></td>
-                        <td>${entry.screenedBy}</td>
-                        <td><a href="/static/eye-test-report.html?id=${entry.id}" class="table-action">View Report</a></td>
+                        <td style="${ishStyle}">${entry.ishihara.status || '—'}</td>
+                        <td style="${snStyle}">${entry.snellen.acuity || '—'}</td>
+                        <td style="${ctStyle}">${entry.contrast.status || '—'}</td>
+                        <td style="${overallStyle}">${entry.overallStatus}</td>
+                        <td style="color:#334155;">${entry.screenedBy}</td>
+                        <td><a href="/eye-test-report?id=${entry.id}" class="table-action" style="color:#0d9488;">View Report</a></td>
                     </tr>`;
             });
 

@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASESS | Patient Profiles</title>
     <meta name="description" content="Manage patient profiles, view scan history and appointments.">
-    <link rel="icon" href="/static/assets/images/logo.png" type="image/png">
+    <link rel="icon" href="/assets/images/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/pages.css">
-    <link rel="stylesheet" href="/static/css/components.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body class="bg-history">
     <div id="main-wrapper">
@@ -41,10 +41,24 @@
         <div id="footer-placeholder"></div>
     </div>
 
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/script.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/toast.js"></script>
+    <script src="/js/script.js"></script>
     <script>
+        // Role guard: superadmin cannot access Patient Profiles
+        (function() {
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    if (payload.role === 'superadmin') {
+                        window.location.href = '/index';
+                        return;
+                    }
+                } catch(e) {}
+            }
+        })();
+
         async function loadPatients() {
             const container = document.getElementById('patientsContent');
             try {
@@ -57,7 +71,7 @@
                         <div style="text-align:center; padding:40px 20px;">
                             <i class="ri-user-add-line" style="font-size:3rem; color:#42a5f5;"></i>
                             <p style="color:var(--card-para); font-size:1rem; margin-top:16px;">No patient records yet.</p>
-                            <a href="/static/capture.html" class="btn btn-primary" style="margin-top:16px; display:inline-block;">Start First Scan</a>
+                            <a href="/capture.html" class="btn btn-primary" style="margin-top:16px; display:inline-block;">Start First Scan</a>
                         </div>`;
                     return;
                 }
@@ -118,7 +132,7 @@
                             <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:14px;">
                                 ${conditionsArr.map(c => `<span style="font-size:0.75rem; padding:2px 8px; border-radius:12px; background:#e0f2fe; color:#1565c0; font-weight:500;">${c}</span>`).join('')}
                             </div>
-                            <a href="/static/history.html" class="btn btn-primary" style="width:100%; text-align:center; padding:8px; font-size:0.85rem;">View Records</a>
+                            <a href="/history" class="btn btn-primary" style="width:100%; text-align:center; padding:8px; font-size:0.85rem;">View Records</a>
                         </div>`;
                 });
                 html += '</div>';

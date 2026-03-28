@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASESS | Capture Eye Image</title>
     <meta name="description" content="Upload or capture eye images for AI-powered anterior segment screening.">
-    <link rel="icon" href="/static/assets/images/logo.png" type="image/png">
+    <link rel="icon" href="/assets/images/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/pages.css">
-    <link rel="stylesheet" href="/static/css/components.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body class="bg-capture">
     <div id="main-wrapper">
@@ -26,8 +26,8 @@
                     <div class="card" style="padding:24px;">
                         <h3 style="margin-bottom:16px;"><i class="ri-user-line" style="margin-right:6px;"></i> Patient Information</h3>
                         <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                            <input type="text" id="patientName" class="form-input" placeholder="Patient Name *" style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
-                            <input type="text" id="patientId" class="form-input" placeholder="Patient ID (optional)" style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
+                            <input type="text" id="patientName" class="form-input" placeholder="Patient Name *" required style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
+                            <input type="text" id="patientId" class="form-input" placeholder="Patient ID * (e.g. ABC123)" required style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
                         </div>
                     </div>
 
@@ -87,10 +87,24 @@
         <div id="footer-placeholder"></div>
     </div>
 
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/script.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/toast.js"></script>
+    <script src="/js/script.js"></script>
     <script>
+        // Role guard: superadmin and doctor cannot access New Scan
+        (function() {
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    if (payload.role === 'superadmin' || payload.role === 'doctor') {
+                        window.location.href = '/index';
+                        return;
+                    }
+                } catch(e) {}
+            }
+        })();
+
         const imageInput = document.getElementById('imageInput');
         const uploadArea = document.getElementById('uploadArea');
         const previewPlaceholder = document.getElementById('previewPlaceholder');
@@ -157,9 +171,20 @@
         // ───── Analyze with AI ─────
         analyzeBtn.addEventListener('click', async () => {
             const patientName = document.getElementById('patientName').value.trim();
+            const patientId = document.getElementById('patientId').value.trim();
             if (!patientName) {
                 showToast("Please enter patient name", "warning");
                 document.getElementById('patientName').focus();
+                return;
+            }
+            if (!patientId) {
+                showToast("Please enter patient ID", "warning");
+                document.getElementById('patientId').focus();
+                return;
+            }
+            if (!/^[A-Za-z]{3}[0-9]{3}$/.test(patientId)) {
+                showToast("Patient ID must be 3 letters + 3 numbers (e.g. ABC123)", "warning");
+                document.getElementById('patientId').focus();
                 return;
             }
             if (!imagePreview.src || imagePreview.style.display === 'none') {
@@ -235,7 +260,7 @@
                 }
 
                 // Link to report
-                document.getElementById('viewReportLink').href = '/static/report.html?id=' + result.scan_id;
+                document.getElementById('viewReportLink').href = '/report?id=' + result.scan_id;
 
                 showToast("Analysis complete: " + result.prediction, "success");
 
