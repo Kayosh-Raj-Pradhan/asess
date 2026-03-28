@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel - ASESS</title>
     <meta name="description" content="ASESS Admin Panel - Manage users and system settings.">
-    <link rel="icon" href="/static/assets/images/logo.png" type="image/png">
+    <link rel="icon" href="/assets/images/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
-    <link rel="stylesheet" href="/static/css/style.css" />
-    <link rel="stylesheet" href="/static/css/pages.css" />
-    <link rel="stylesheet" href="/static/css/dashboard.css" />
-    <link rel="stylesheet" href="/static/css/admin.css" />
-    <link rel="stylesheet" href="/static/css/components.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/pages.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="stylesheet" href="/css/components.css" />
 </head>
 <body class="bg-dashboard">
     <div id="main-wrapper">
@@ -29,7 +29,7 @@
                     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
                         <input type="text" id="adminSearchInput" class="search-input" placeholder="🔍 Search users..." oninput="filterAdminTable()">
                         <button class="btn btn-primary" style="padding:8px 20px; font-size:0.9rem; background:#16a34a;" onclick="openCreateUserModal()">+ Create User</button>
-                        <a href="/static/index.html" class="btn btn-primary" style="padding:8px 20px; font-size:0.9rem;">← Back to Dashboard</a>
+                        <a href="/index" class="btn btn-primary" style="padding:8px 20px; font-size:0.9rem;">← Back to Dashboard</a>
                     </div>
                 </div>
                 <div style="overflow-x: auto;">
@@ -56,9 +56,9 @@
         <div id="footer-placeholder"></div>
     </div>
 
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/script.js"></script>
-    <script src="/static/js/dashboard.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/toast.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>

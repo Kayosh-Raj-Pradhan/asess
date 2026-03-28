@@ -2,7 +2,7 @@
 // This file is intentionally written without a bundler so it can be loaded
 // directly in the browser via a plain <script> tag.
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "";  // Same origin — frontend server proxies to backend
 
 async function apiRequest(path, method = "GET", body = null, options = {}) {
     const url = `${API_BASE_URL}${path}`;
@@ -58,6 +58,5 @@ async function apiRequest(path, method = "GET", body = null, options = {}) {
 function logout() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    window.location.href = "/users/login";
+    window.location.href = "/login";
 }
-

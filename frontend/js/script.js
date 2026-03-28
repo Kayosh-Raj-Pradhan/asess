@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const footerEl = document.getElementById("footer-placeholder");
 
     if (headerEl) {
-        fetch("/static/nav.html")
+        fetch("/nav.html")
             .then((r) => r.text())
             .then((html) => {
                 headerEl.innerHTML = html;
@@ -29,12 +29,35 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     });
                 }
+                // Role-based nav visibility
+                const token = localStorage.getItem("access_token");
+                if (token) {
+                    try {
+                        const payload = JSON.parse(atob(token.split('.')[1]));
+                        const role = payload.role;
+                        // Superadmin: hide New Scan, Eye Test, Patients (admin-only system access)
+                        if (role === "superadmin") {
+                            headerEl.querySelectorAll('.nav-links a').forEach(link => {
+                                const href = link.getAttribute('href');
+                                if (href === '/capture' || href === '/test' || href === '/patients') {
+                                    link.style.display = 'none';
+                                }
+                            });
+                        }
+                        // Doctors: hide New Scan only
+                        if (role === "doctor") {
+                            headerEl.querySelectorAll('.nav-links a').forEach(link => {
+                                if (link.getAttribute('href') === '/capture') link.style.display = 'none';
+                            });
+                        }
+                    } catch(e) { /* ignore parse errors */ }
+                }
             })
             .catch((err) => console.error("Failed to load nav:", err));
     }
 
     if (footerEl) {
-        fetch("/static/footer.html")
+        fetch("/footer.html")
             .then((r) => r.text())
             .then((html) => {
                 footerEl.innerHTML = html;
