@@ -6,9 +6,11 @@ from datetime import datetime, timedelta
 import json
 import base64
 import re
+import io
 
 from asess.core.database import SessionLocal
 from asess.services.ml_service import eye_disease_model
+from asess.services.image_quality_service import run_preprocess_pipeline
 from asess.models.scan import ScanResult
 from asess.models.patient import Patient
 from asess.schemas.scan import ScanRead, ScanUpdate
@@ -22,6 +24,31 @@ def get_db():
     finally:
         db.close()
 
+# ──────────────── Image Pre-Check (Quality + Eye Detection) ────────────────
+
+@router.post("/precheck")
+async def precheck_image(file: UploadFile = File(...)):
+    """
+    Validates image quality and checks if it contains an eye.
+    Frontend calls this BEFORE /predict to give instant feedback.
+    """
+    try:
+        image_bytes = await file.read()
+        report = run_preprocess_pipeline(image_bytes)
+        return JSONResponse({
+            "passed": report.passed,
+            "is_eye_image": report.is_eye_image,
+            "issues": report.issues,
+            "quality_score": report.quality_score,
+            "metrics": {
+                "brightness": round(report.brightness, 1),
+                "contrast": round(report.contrast, 1),
+                "sharpness": round(report.sharpness, 1),
+            }
+        })
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error checking image: {str(e)}")
+
 # ──────────────── Predict & Save ────────────────
 
 @router.post("/predict")
@@ -31,38 +58,75 @@ async def predict_eye_disease(
     patient_id: str = Form(None),
     notes: str = Form(None),
     screened_by: str = Form(None),
+    skip_quality_check: str = Form("false"),
     db: Session = Depends(get_db)
 ):
     if eye_disease_model is None:
         raise HTTPException(status_code=503, detail="AI model is currently unavailable")
 
-    # Validate patient_id format: 3 letters + 3 numbers (e.g. ABC123)
-    if patient_id:
-        if not re.match(r'^[A-Za-z]{3}[0-9]{3}$', patient_id):
-            raise HTTPException(
-                status_code=400,
-                detail="Patient ID must be 3 letters followed by 3 numbers (e.g. ABC123)"
-            )
+    pid = patient_id
+    if pid:
         # Check for duplicate patient_id with different name
-        existing = db.query(Patient).filter(Patient.patient_id == patient_id.upper()).first()
+        existing = db.query(Patient).filter(Patient.patient_id == pid.upper()).first()
         if existing and existing.patient_name.lower() != patient_name.lower():
             raise HTTPException(
                 status_code=400,
-                detail=f"Patient ID {patient_id.upper()} is already assigned to '{existing.patient_name}'"
+                detail=f"Patient ID {pid.upper()} is already assigned to '{existing.patient_name}'"
             )
-        patient_id = patient_id.upper()  # Normalize to uppercase
+        pid = pid.upper()
+    else:
+        existing = db.query(Patient).filter(func.lower(Patient.patient_name) == func.lower(patient_name)).first()
+        if existing:
+            pid = existing.patient_id
+        else:
+            count = db.query(Patient).count()
+            pid = f"PAT{count+1:03d}"
 
     try:
         image_bytes = await file.read()
-        result = eye_disease_model.predict(image_bytes)
 
-        # Encode image to base64 for storage
+        # ── Pipeline Step 1 & 2: Quality + Eye Detection ──
+        if skip_quality_check.lower() != "true":
+            report = run_preprocess_pipeline(image_bytes)
+
+            if not report.is_eye_image:
+                return JSONResponse(status_code=422, content={
+                    "status": "rejected",
+                    "reason": "not_eye_image",
+                    "issues": report.issues,
+                    "quality_score": report.quality_score,
+                    "message": "This does not appear to be an eye image. Please upload a clear eye photograph."
+                })
+
+            if not report.passed:
+                return JSONResponse(status_code=422, content={
+                    "status": "quality_failed",
+                    "reason": "low_quality",
+                    "issues": report.issues,
+                    "quality_score": report.quality_score,
+                    "message": "Image quality is insufficient for accurate diagnosis."
+                })
+
+            # Use the cropped ROI if available
+            if report.cropped_image:
+                buf = io.BytesIO()
+                report.cropped_image.save(buf, format="PNG")
+                image_bytes_for_model = buf.getvalue()
+            else:
+                image_bytes_for_model = image_bytes
+        else:
+            image_bytes_for_model = image_bytes
+
+        # ── Pipeline Step 3: Disease Classifier ──
+        result = eye_disease_model.predict(image_bytes_for_model)
+
+        # Encode ORIGINAL image to base64 for storage (not cropped)
         image_b64 = base64.b64encode(image_bytes).decode("utf-8")
 
         # Save to database
         scan = ScanResult(
             patient_name=patient_name,
-            patient_id=patient_id or f"UNK{int(datetime.utcnow().timestamp()) % 1000:03d}",
+            patient_id=pid,
             prediction=result["prediction"],
             confidence=result["confidence"],
             all_probabilities=json.dumps(result["all_probabilities"]),
@@ -77,7 +141,6 @@ async def predict_eye_disease(
         db.refresh(scan)
 
         # Auto-create patient profile if not exists
-        pid = scan.patient_id
         existing_patient = db.query(Patient).filter(Patient.patient_id == pid).first()
         if not existing_patient:
             new_patient = Patient(

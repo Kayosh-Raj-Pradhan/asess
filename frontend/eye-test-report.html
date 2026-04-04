@@ -50,6 +50,7 @@
             const ish = entry.ishihara || {};
             const sn = entry.snellen || {};
             const ct = entry.contrast || {};
+            const perc = entry.perception || entry.blindness || {};
 
             // Ishihara section with color blindness type
             let ishHtml = '';
@@ -121,6 +122,18 @@
                     </div>
                 </div>
 
+                <!-- Visual Perception -->
+                <div class="card">
+                    <h3>4. Visual Perception</h3>
+                    <div style="color:var(--paragraph);">
+                        ${perc.correct !== undefined
+                            ? `<p>Correct: <strong>${perc.correct}/${perc.total}</strong> (${perc.pct}%)</p>
+                               <p>Status: <strong class="${perc.status === 'Normal' ? 'text-success' : 'text-warning'}">${perc.status}</strong></p>
+                               ${perc.severity && perc.severity !== 'None' ? `<p>Severity: <strong class="text-warning">${perc.severity}</strong></p>` : ''}`
+                            : '<p class="text-warning">Test not completed</p>'}
+                    </div>
+                </div>
+
                 <!-- Overall -->
                 <div class="card">
                     <h3>Overall Assessment</h3>
@@ -147,7 +160,8 @@
         function deleteReport(id) {
             if (!confirm('Are you sure you want to delete this eye test report?')) return;
             let history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
-            history = history.filter(e => e.id !== id);
+            const targetId = String(id).trim();
+            history = history.filter(e => String(e.id).trim() !== targetId);
             localStorage.setItem('eyeTestHistory', JSON.stringify(history));
             window.location.href = '/history.html';
         }

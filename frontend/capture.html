@@ -12,6 +12,79 @@
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        /* Quality Check UI */
+        .quality-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+            z-index: 9999; justify-content: center; align-items: center;
+        }
+        .quality-overlay.active { display: flex; }
+        .quality-card {
+            background: #fff; border-radius: 20px; padding: 32px 36px;
+            max-width: 480px; width: 92%; box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+            animation: slideUp 0.35s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .quality-gauge {
+            width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .quality-gauge::before {
+            content: ''; position: absolute; inset: 0; border-radius: 50%;
+            border: 6px solid #e2e8f0;
+        }
+        .quality-gauge .score { font-size: 2rem; font-weight: 700; font-family: 'Montserrat', sans-serif; }
+        .quality-gauge .label { font-size: 0.7rem; color: #64748b; font-weight: 500; }
+
+        .issue-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 10px 14px; border-radius: 10px; margin-bottom: 8px;
+            font-size: 0.88rem; font-weight: 500;
+        }
+        .issue-item.error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+        .issue-item.warning { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+        .issue-item i { font-size: 1.1rem; margin-top: 1px; flex-shrink: 0; }
+
+        .quality-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .quality-actions button { flex: 1; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; }
+        .quality-actions .btn-retake { background: #dc2626; color: #fff; }
+        .quality-actions .btn-retake:hover { background: #b91c1c; }
+        .quality-actions .btn-proceed { background: #f0f4f8; color: #475569; border: 1px solid #e2e8f0; }
+        .quality-actions .btn-proceed:hover { background: #e2e8f0; }
+
+        .quality-pass { text-align: center; }
+        .quality-pass .check-icon { font-size: 3rem; color: #16a34a; margin-bottom: 8px; }
+
+        /* Pipeline indicator */
+        .pipeline-steps {
+            display: flex; gap: 0; margin-bottom: 24px; justify-content: center; align-items: center;
+        }
+        .pipeline-step {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 24px;
+            font-size: 0.82rem; font-weight: 600; color: #94a3b8;
+            background: rgba(255,255,255,0.6); border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        .pipeline-step.active { background: #1565c0; color: #fff; border-color: #1565c0; box-shadow: 0 4px 12px rgba(21,101,192,0.3); }
+        .pipeline-step.done { background: #16a34a; color: #fff; border-color: #16a34a; }
+        .pipeline-step.fail { background: #dc2626; color: #fff; border-color: #dc2626; }
+        .pipeline-arrow { color: #cbd5e1; font-size: 1.2rem; margin: 0 4px; }
+
+        .metrics-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px;
+        }
+        .metric-item {
+            text-align: center; padding: 10px 8px; border-radius: 10px;
+            background: #f8fafc; border: 1px solid #e2e8f0;
+        }
+        .metric-item .metric-val { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
+        .metric-item .metric-lbl { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+    </style>
 </head>
 
 <body class="bg-capture">
@@ -19,7 +92,22 @@
         <div id="header-placeholder"></div>
 
         <div class="container page-container">
-            <h2 style="text-align:center; margin-bottom:28px; font-size:1.6rem; color: #ffffff;">Capture Eye Image</h2>
+            <h2 style="text-align:center; margin-bottom:10px; font-size:1.6rem; color: #ffffff;">Capture Eye Image</h2>
+
+            <!-- Pipeline Indicator -->
+            <div class="pipeline-steps" id="pipelineSteps">
+                <div class="pipeline-step" id="step1" data-step="1">
+                    <i class="ri-image-edit-line"></i> Quality Check
+                </div>
+                <span class="pipeline-arrow">→</span>
+                <div class="pipeline-step" id="step2" data-step="2">
+                    <i class="ri-eye-line"></i> Eye Detection
+                </div>
+                <span class="pipeline-arrow">→</span>
+                <div class="pipeline-step" id="step3" data-step="3">
+                    <i class="ri-robot-line"></i> Disease Classifier
+                </div>
+            </div>
 
             <div class="capture-layout">
                 <!-- Left Column -->
@@ -31,9 +119,7 @@
                         <div style="display:flex; gap:12px; flex-wrap:wrap;">
                             <input type="text" id="patientName" class="form-input" placeholder="Patient Name *" required
                                 style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
-                            <input type="text" id="patientId" class="form-input"
-                                placeholder="Patient ID * (e.g. ABC123)" required
-                                style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
+                            <input type="hidden" id="patientId">
                         </div>
                     </div>
 
@@ -66,6 +152,9 @@
                     <h3>Image Preview</h3>
                     <div class="preview-placeholder" id="previewPlaceholder">No image selected</div>
                     <img class="captured-img" id="imagePreview" style="display:none;" alt="Preview">
+
+                    <!-- Quality Status Badge -->
+                    <div id="qualityBadge" style="display:none; margin-top:12px; padding:10px 16px; border-radius:10px; font-size:0.85rem; font-weight:600; text-align:center;"></div>
 
                     <div style="margin-top:20px;">
                         <textarea id="aiNotes" class="form-input"
@@ -100,6 +189,11 @@
         <div id="footer-placeholder"></div>
     </div>
 
+    <!-- Quality Check Modal -->
+    <div class="quality-overlay" id="qualityOverlay">
+        <div class="quality-card" id="qualityCard"></div>
+    </div>
+
     <script src="/js/api.js"></script>
     <script src="/js/toast.js"></script>
     <script src="/js/script.js"></script>
@@ -129,6 +223,29 @@
         const stopCamBtn = document.getElementById('stopCamBtn');
         const analyzeBtn = document.getElementById('analyzeBtn');
         let stream = null;
+        let qualityPassed = false;
+        let skipQuality = false;
+
+        // Parse URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('patient_name')) {
+            document.getElementById('patientName').value = urlParams.get('patient_name');
+        }
+        if (urlParams.get('patient_id')) {
+            document.getElementById('patientId').value = urlParams.get('patient_id');
+        }
+
+        // ─── Pipeline Step Indicator ───
+        function setPipelineStep(step, state) {
+            const el = document.getElementById('step' + step);
+            el.classList.remove('active', 'done', 'fail');
+            if (state) el.classList.add(state);
+        }
+        function resetPipeline() {
+            [1,2,3].forEach(s => setPipelineStep(s, ''));
+            qualityPassed = false;
+            skipQuality = false;
+        }
 
         // Upload
         uploadArea.addEventListener('click', () => imageInput.click());
@@ -146,7 +263,10 @@
                 imagePreview.src = e.target.result;
                 imagePreview.style.display = 'block';
                 previewPlaceholder.style.display = 'none';
-                showToast("Image loaded successfully", "success");
+                document.getElementById('aiResultCard').style.display = 'none';
+                document.getElementById('qualityBadge').style.display = 'none';
+                resetPipeline();
+                runPrecheck(file);
             };
             reader.readAsDataURL(file);
         }
@@ -171,6 +291,15 @@
             imagePreview.src = webcamCanvas.toDataURL('image/png');
             imagePreview.style.display = 'block';
             previewPlaceholder.style.display = 'none';
+            document.getElementById('aiResultCard').style.display = 'none';
+            document.getElementById('qualityBadge').style.display = 'none';
+            resetPipeline();
+
+            // Convert canvas to blob for precheck
+            webcamCanvas.toBlob((blob) => {
+                if (blob) runPrecheck(blob);
+            }, 'image/png');
+
             showToast("Image captured from webcam", "success");
         });
         stopCamBtn.addEventListener('click', () => {
@@ -181,6 +310,155 @@
             stopCamBtn.style.display = 'none';
         });
 
+        // ─── Image Quality Pre-Check ───
+        async function runPrecheck(fileOrBlob) {
+            setPipelineStep(1, 'active');
+            const badge = document.getElementById('qualityBadge');
+            badge.style.display = 'block';
+            badge.style.background = '#eff6ff';
+            badge.style.color = '#1565c0';
+            badge.style.border = '1px solid #bfdbfe';
+            badge.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Checking image quality...';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', fileOrBlob, 'check.png');
+
+                const resp = await fetch('/ai/precheck', { method: 'POST', body: formData });
+                const data = await resp.json();
+
+                if (data.passed && data.is_eye_image) {
+                    // All good!
+                    setPipelineStep(1, 'done');
+                    setPipelineStep(2, 'done');
+                    qualityPassed = true;
+
+                    badge.style.background = '#f0fdf4';
+                    badge.style.color = '#16a34a';
+                    badge.style.border = '1px solid #bbf7d0';
+                    badge.innerHTML = `<i class="ri-checkbox-circle-line"></i> Quality Score: ${data.quality_score}/100 — Ready for analysis`;
+
+                    showToast("Image quality verified ✓", "success");
+                } else {
+                    // Issues found — show modal
+                    qualityPassed = false;
+                    if (!data.is_eye_image) {
+                        setPipelineStep(1, 'done');
+                        setPipelineStep(2, 'fail');
+                    } else {
+                        setPipelineStep(1, 'fail');
+                    }
+
+                    badge.style.background = '#fef2f2';
+                    badge.style.color = '#dc2626';
+                    badge.style.border = '1px solid #fecaca';
+                    badge.innerHTML = `<i class="ri-error-warning-line"></i> Issues detected — Score: ${data.quality_score}/100`;
+
+                    showQualityModal(data);
+                }
+            } catch (err) {
+                // If precheck fails (server down, etc), allow proceeding
+                setPipelineStep(1, 'done');
+                setPipelineStep(2, 'done');
+                qualityPassed = true;
+                badge.style.display = 'none';
+                showToast("Quality check unavailable, proceeding...", "warning");
+            }
+        }
+
+        // ─── Quality Modal ───
+        function showQualityModal(data) {
+            const overlay = document.getElementById('qualityOverlay');
+            const card = document.getElementById('qualityCard');
+
+            const scoreColor = data.quality_score >= 70 ? '#16a34a' : (data.quality_score >= 40 ? '#d97706' : '#dc2626');
+            const isNotEye = !data.is_eye_image;
+
+            let issuesHtml = '';
+            (data.issues || []).forEach(issue => {
+                const isError = issue.includes('No eye detected') || issue.includes('not appear');
+                issuesHtml += `
+                    <div class="issue-item ${isError ? 'error' : 'warning'}">
+                        <i class="${isError ? 'ri-close-circle-line' : 'ri-alert-line'}"></i>
+                        <span>${issue}</span>
+                    </div>`;
+            });
+
+            let metricsHtml = '';
+            if (data.metrics) {
+                metricsHtml = `
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <div class="metric-val">${data.metrics.brightness}</div>
+                            <div class="metric-lbl">Brightness</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-val">${data.metrics.contrast}</div>
+                            <div class="metric-lbl">Contrast</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-val">${data.metrics.sharpness}</div>
+                            <div class="metric-lbl">Sharpness</div>
+                        </div>
+                    </div>`;
+            }
+
+            card.innerHTML = `
+                <div style="text-align:center; margin-bottom:16px;">
+                    <div class="quality-gauge" style="border-color:${scoreColor};">
+                        <div style="text-align:center;">
+                            <div class="score" style="color:${scoreColor};">${Math.round(data.quality_score)}</div>
+                            <div class="label">/ 100</div>
+                        </div>
+                    </div>
+                    <h3 style="margin:0 0 4px; color:#1e293b;">${isNotEye ? '❌ Not an Eye Image' : '⚠️ Quality Issues Detected'}</h3>
+                    <p style="color:#64748b; font-size:0.88rem; margin:0;">${isNotEye ? 'The uploaded image does not appear to contain an eye.' : 'The following issues were found with your image:'}</p>
+                </div>
+
+                <div style="margin-bottom:12px;">${issuesHtml}</div>
+                ${metricsHtml}
+
+                <div class="quality-actions">
+                    <button class="btn-retake" onclick="retakeImage()">
+                        <i class="ri-camera-line" style="margin-right:4px;"></i> Retake / Re-upload
+                    </button>
+                    ${!isNotEye ? `<button class="btn-proceed" onclick="proceedAnyway()">Proceed Anyway</button>` : ''}
+                </div>
+            `;
+
+            overlay.classList.add('active');
+        }
+
+        function closeQualityModal() {
+            document.getElementById('qualityOverlay').classList.remove('active');
+        }
+
+        function retakeImage() {
+            closeQualityModal();
+            resetPipeline();
+            imagePreview.style.display = 'none';
+            previewPlaceholder.style.display = 'block';
+            document.getElementById('qualityBadge').style.display = 'none';
+            imageInput.value = '';
+            showToast("Please upload or capture a new image", "info");
+        }
+
+        function proceedAnyway() {
+            closeQualityModal();
+            skipQuality = true;
+            qualityPassed = true;
+            setPipelineStep(1, 'done');
+            setPipelineStep(2, 'done');
+
+            const badge = document.getElementById('qualityBadge');
+            badge.style.background = '#fffbeb';
+            badge.style.color = '#d97706';
+            badge.style.border = '1px solid #fde68a';
+            badge.innerHTML = '<i class="ri-error-warning-line"></i> Proceeding with quality warnings — results may be less accurate';
+
+            showToast("Proceeding with quality warnings", "warning");
+        }
+
         // ───── Analyze with AI ─────
         analyzeBtn.addEventListener('click', async () => {
             const patientName = document.getElementById('patientName').value.trim();
@@ -190,21 +468,16 @@
                 document.getElementById('patientName').focus();
                 return;
             }
-            if (!patientId) {
-                showToast("Please enter patient ID", "warning");
-                document.getElementById('patientId').focus();
-                return;
-            }
-            if (!/^[A-Za-z]{3}[0-9]{3}$/.test(patientId)) {
-                showToast("Patient ID must be 3 letters + 3 numbers (e.g. ABC123)", "warning");
-                document.getElementById('patientId').focus();
-                return;
-            }
             if (!imagePreview.src || imagePreview.style.display === 'none') {
                 showToast("Please select or capture an image first", "warning");
                 return;
             }
+            if (!qualityPassed) {
+                showToast("Image did not pass quality check. Please retake or click 'Proceed Anyway'.", "warning");
+                return;
+            }
 
+            setPipelineStep(3, 'active');
             showToast("AI Analysis started...", "info");
             analyzeBtn.innerHTML = '<i class="ri-loader-4-line ri-spin" style="margin-right:6px;"></i> Analyzing...';
             analyzeBtn.disabled = true;
@@ -224,6 +497,7 @@
                 formData.append('patient_name', patientName);
                 formData.append('patient_id', document.getElementById('patientId').value.trim() || '');
                 formData.append('notes', document.getElementById('aiNotes').value || '');
+                formData.append('skip_quality_check', skipQuality ? 'true' : 'false');
 
                 // Get screened-by from logged-in user if available
                 let screenedBy = 'System';
@@ -241,12 +515,26 @@
                     body: formData
                 });
 
-                if (!response.ok) {
-                    const errData = await response.json();
-                    throw new Error(errData.detail || response.statusText);
+                const result = await response.json();
+
+                // Handle pipeline rejection from backend
+                if (result.status === 'rejected' || result.status === 'quality_failed') {
+                    setPipelineStep(3, 'fail');
+                    showQualityModal({
+                        passed: false,
+                        is_eye_image: result.reason !== 'not_eye_image',
+                        issues: result.issues || [result.message],
+                        quality_score: result.quality_score || 0,
+                        metrics: null
+                    });
+                    return;
                 }
 
-                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.detail || response.statusText);
+                }
+
+                setPipelineStep(3, 'done');
 
                 // Show result card
                 const resultCard = document.getElementById('aiResultCard');
@@ -278,6 +566,7 @@
                 showToast("Analysis complete: " + result.prediction, "success");
 
             } catch (err) {
+                setPipelineStep(3, 'fail');
                 showToast("Error: " + err.message, "error");
             } finally {
                 analyzeBtn.innerHTML = '<i class="ri-scan-line" style="margin-right:6px;"></i> Analyze with AI';
@@ -287,4 +576,4 @@
     </script>
 </body>
 
-</html>
+</html>

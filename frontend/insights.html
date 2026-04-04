@@ -84,33 +84,49 @@
                 </div>
             </div>
 
-            <!-- Charts Row -->
+            <!-- New Dashboard Grid -->
+            <div class="chart-grid" style="grid-template-columns: 1.8fr 1.2fr;">
+                <div class="chart-panel" style="display:flex; flex-direction:column;">
+                    <h3><i class="ri-line-chart-line" style="margin-right:6px; color:#1565c0;"></i>Screening Frequency Over Time</h3>
+                    <div style="flex:1; display:flex; align-items:center; min-height:240px;">
+                        <canvas id="trendChart" style="width:100%;"></canvas>
+                    </div>
+                    <p id="trendNoData" style="display:none; text-align:center; color:#64748b; padding:20px;">No scan data available yet.</p>
+                </div>
+                
+                <div class="chart-panel" style="display:flex; flex-direction:column;">
+                    <h3><i class="ri-bar-chart-box-line" style="margin-right:6px; color:#1565c0;"></i>Average Scans per Day</h3>
+                    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding: 0 10px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 24px;">
+                            <span style="font-size:3.8rem; font-weight:700; color:#1e293b; font-family:'Montserrat', sans-serif; line-height: 1;" id="avgScansVal">0</span>
+                            <div style="width:130px; height:60px;">
+                                <canvas id="sparklineChart"></canvas>
+                            </div>
+                        </div>
+                        <div style="border-bottom:2px solid #94a3b8;"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="chart-grid">
-                <div class="chart-panel">
-                    <h3><i class="ri-pie-chart-line" style="margin-right:6px; color:#1565c0;"></i>Condition Distribution</h3>
-                    <div style="max-height:280px; display:flex; justify-content:center;">
+                <div class="chart-panel" style="display:flex; flex-direction:column;">
+                    <h3><i class="ri-pie-chart-2-line" style="margin-right:6px; color:#1565c0;"></i>Most Common Detected Diseases</h3>
+                    <div style="flex:1; display:flex; justify-content:center; align-items:center; min-height:260px;">
                         <canvas id="conditionChart"></canvas>
                     </div>
                     <p id="conditionNoData" style="display:none; text-align:center; color:#64748b; padding:20px;">No scan data available yet.</p>
                 </div>
+                
                 <div class="chart-panel">
-                    <h3><i class="ri-line-chart-line" style="margin-right:6px; color:#1565c0;"></i>Screening Trends (Last 7 Days)</h3>
-                    <div style="max-height:280px;">
-                        <canvas id="trendChart"></canvas>
-                    </div>
-                    <p id="trendNoData" style="display:none; text-align:center; color:#64748b; padding:20px;">No scan data available yet.</p>
+                    <h3><i class="ri-list-ordered" style="margin-right:6px; color:#1565c0;"></i>Top 5 Conditions</h3>
+                    <div id="topConditionsList" style="margin-top:20px; display:flex; flex-direction:column; gap:8px;"></div>
                 </div>
             </div>
 
-            <!-- Condition Breakdown + Top Screeners -->
-            <div class="chart-grid">
-                <div class="chart-panel" id="conditionBreakdown" style="display:none;">
-                    <h3><i class="ri-bar-chart-horizontal-line" style="margin-right:6px; color:#1565c0;"></i>Condition Breakdown</h3>
-                    <div id="conditionBarsContainer"></div>
-                </div>
+            <div class="chart-grid" style="grid-template-columns: 1fr;">
                 <div class="chart-panel" id="screenersPanel" style="display:none;">
                     <h3><i class="ri-user-star-line" style="margin-right:6px; color:#1565c0;"></i>Top Screeners</h3>
-                    <div id="screenersContainer"></div>
+                    <div id="screenersContainer" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;"></div>
                 </div>
             </div>
         </div>
@@ -148,43 +164,44 @@
                     const condColors = condLabels.map((_, i) => PALETTE[i % PALETTE.length]);
                     if (condChart) condChart.destroy();
                     condChart = new Chart(document.getElementById('conditionChart'), {
-                        type: 'doughnut',
+                        type: 'pie',
                         data: {
                             labels: condLabels,
                             datasets: [{
                                 data: condValues,
                                 backgroundColor: condColors,
-                                borderWidth: 2,
+                                borderWidth: 1,
                                 borderColor: '#ffffff',
                             }]
                         },
                         options: {
                             responsive: true,
-                            cutout: '55%',
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
-                                    position: 'bottom',
-                                    labels: { boxWidth: 12, padding: 14, font: { size: 11, family: 'Montserrat' }, color: '#475569' }
+                                    position: 'right',
+                                    labels: { boxWidth: 12, padding: 14, font: { size: 12, family: 'Montserrat' }, color: '#475569', usePointStyle: true }
                                 }
                             }
                         }
                     });
 
-                    // Condition breakdown bars
+                    // Top 5 Conditions
                     const total = condValues.reduce((a,b) => a+b, 0);
-                    const barsDiv = document.getElementById('conditionBarsContainer');
-                    barsDiv.innerHTML = '';
-                    condLabels.forEach((cls, i) => {
-                        const pct = total > 0 ? ((condValues[i] / total) * 100).toFixed(1) : 0;
-                        const color = PALETTE[i % PALETTE.length];
-                        barsDiv.innerHTML += `
-                            <div class="breakdown-bar">
-                                <span class="bar-label">${cls}</span>
-                                <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${color};"></div></div>
-                                <span class="bar-value">${condValues[i]} (${pct}%)</span>
+                    const top5Div = document.getElementById('topConditionsList');
+                    top5Div.innerHTML = '';
+                    
+                    let condArray = condLabels.map((lbl, idx) => ({ label: lbl, val: condValues[idx] }));
+                    condArray.sort((a,b) => b.val - a.val);
+                    
+                    condArray.slice(0, 5).forEach(c => {
+                        const pct = total > 0 ? Math.round((c.val / total) * 100) : 0;
+                        top5Div.innerHTML += `
+                            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #cbd5e1; padding:12px 0;">
+                                <span style="font-weight:500; color:#334155;">${c.label}</span>
+                                <span style="font-weight:600; color:#475569;">${pct} %</span>
                             </div>`;
                     });
-                    document.getElementById('conditionBreakdown').style.display = 'block';
                 } else {
                     document.getElementById('conditionChart').style.display = 'none';
                     document.getElementById('conditionNoData').style.display = 'block';
@@ -203,17 +220,17 @@
                             datasets: [{
                                 label: 'Daily Scans',
                                 data: trendValues,
-                                borderColor: '#1565c0',
-                                backgroundColor: 'rgba(21, 101, 192, 0.08)',
-                                fill: true,
-                                tension: 0.4,
-                                pointRadius: 5,
-                                pointBackgroundColor: '#1565c0',
+                                borderColor: '#94a3b8',
+                                fill: false,
+                                tension: 0,
+                                pointRadius: 4,
+                                pointBackgroundColor: '#94a3b8',
                                 borderWidth: 2,
                             }]
                         },
                         options: {
                             responsive: true,
+                            maintainAspectRatio: false,
                             scales: {
                                 y: {
                                     beginAtZero: true,
@@ -222,14 +239,38 @@
                                 },
                                 x: {
                                     grid: { display: false },
-                                    ticks: { color: '#64748b', font: { family: 'Montserrat' } }
+                                    ticks: { color: '#64748b', font: { family: 'Montserrat' }, maxTicksLimit: 7 }
                                 }
                             },
                             plugins: {
-                                legend: {
-                                    labels: { font: { size: 12, family: 'Montserrat' }, color: '#475569' }
-                                }
+                                legend: { display: false }
                             }
+                        }
+                    });
+
+                    // Average Scans per Day sparkline
+                    const sum = trendValues.reduce((a, b) => a + b, 0);
+                    const avg = trendValues.length ? Math.round(sum / trendValues.length) : 0;
+                    document.getElementById('avgScansVal').textContent = avg;
+                    
+                    new Chart(document.getElementById('sparklineChart'), {
+                        type: 'line',
+                        data: {
+                            labels: trendLabels,
+                            datasets: [{
+                                data: trendValues,
+                                borderColor: '#64748b',
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                fill: false,
+                                tension: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                            scales: { x: { display: false }, y: { display: false, min: 0 } }
                         }
                     });
                 } else {

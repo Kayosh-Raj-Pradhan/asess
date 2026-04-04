@@ -66,7 +66,7 @@
                 if (!response.ok) throw new Error('Failed to fetch');
                 const scans = await response.json();
 
-                if (scans.length === 0) {
+                if (scans.length === 0 && JSON.parse(localStorage.getItem('eyeTestHistory') || '[]').length === 0) {
                     container.innerHTML = `
                         <div style="text-align:center; padding:40px 20px;">
                             <i class="ri-user-add-line" style="font-size:3rem; color:#42a5f5;"></i>
@@ -85,6 +85,7 @@
                             name: name,
                             patient_id: s.patient_id,
                             scans: [],
+                            eyeTests: [],
                             latestDate: s.scan_date,
                             conditions: new Set()
                         };
@@ -93,6 +94,39 @@
                     patients[name].conditions.add(s.prediction);
                     if (s.scan_date > patients[name].latestDate) {
                         patients[name].latestDate = s.scan_date;
+                    }
+                });
+
+                // Merge Eye Test History
+                const eyeTests = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
+                eyeTests.forEach(test => {
+                    const name = test.patientName;
+                    if (!patients[name]) {
+                        patients[name] = {
+                            name: name,
+                            patient_id: test.patientId || '—',
+                            scans: [],
+                            eyeTests: [],
+                            latestDate: test.date,
+                            conditions: new Set()
+                        };
+                    }
+                    patients[name].eyeTests.push(test);
+                    
+                    if (test.overallStatus && test.overallStatus !== 'Normal') {
+                        patients[name].conditions.add('Eye Test Issues');
+                    } else if (patients[name].conditions.size === 0) {
+                        patients[name].conditions.add('Normal');
+                    }
+                    
+                    const tDate = new Date(test.date).toISOString();
+                    if (!patients[name].latestDate || tDate > patients[name].latestDate) {
+                        patients[name].latestDate = tDate;
+                    }
+                    
+                    // update ID if it was missing in scan but test has it
+                    if (test.patientId && (!patients[name].patient_id || patients[name].patient_id === '—')) {
+                        patients[name].patient_id = test.patientId;
                     }
                 });
 
@@ -105,9 +139,10 @@
                     const hasAbnormal = conditionsArr.some(c => c !== 'Normal');
                     const statusColor = hasAbnormal ? '#1565c0' : '#16a34a';
                     const statusText = hasAbnormal ? 'Needs Attention' : 'Healthy';
+                    const totalRecords = p.scans.length + p.eyeTests.length;
 
                     html += `
-                        <div class="patient-card" data-name="${p.name.toLowerCase()}">
+                        <div class="patient-card" data-name="${p.name.toLowerCase()}" data-id="${(p.patient_id || '').toLowerCase()}">
                             <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
                                 <div style="width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#1565c0,#42a5f5); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem; font-weight:700;">
                                     ${p.name.charAt(0).toUpperCase()}
@@ -118,8 +153,8 @@
                                 </div>
                             </div>
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                                <span style="font-size:0.85rem; color:var(--card-para);">Total Scans</span>
-                                <strong style="color:var(--headline);">${p.scans.length}</strong>
+                                <span style="font-size:0.85rem; color:var(--card-para);">Total Records</span>
+                                <strong style="color:var(--headline);">${totalRecords}</strong>
                             </div>
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                                 <span style="font-size:0.85rem; color:var(--card-para);">Last Visit</span>
@@ -132,7 +167,10 @@
                             <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:14px;">
                                 ${conditionsArr.map(c => `<span style="font-size:0.75rem; padding:2px 8px; border-radius:12px; background:#e0f2fe; color:#1565c0; font-weight:500;">${c}</span>`).join('')}
                             </div>
-                            <a href="/history" class="btn btn-primary" style="width:100%; text-align:center; padding:8px; font-size:0.85rem;">View Records</a>
+                            <div style="display:flex; gap:8px;">
+                                <a href="/history?patient_id=${p.patient_id}" class="btn btn-primary" style="flex:1; text-align:center; padding:8px; font-size:0.85rem;">View Records</a>
+                                <a href="/capture?patient_id=${p.patient_id}&patient_name=${encodeURIComponent(p.name)}" class="btn btn-primary" style="background:#0d9488; flex:1; text-align:center; padding:8px; font-size:0.85rem;">Scan Again</a>
+                            </div>
                         </div>`;
                 });
                 html += '</div>';
@@ -154,7 +192,9 @@
             const query = document.getElementById('patientSearchInput').value.toLowerCase();
             const cards = document.querySelectorAll('.patient-card');
             cards.forEach(card => {
-                card.style.display = card.dataset.name.includes(query) ? '' : 'none';
+                const name = card.dataset.name || '';
+                const id = card.dataset.id || '';
+                card.style.display = (name.includes(query) || id.includes(query)) ? '' : 'none';
             });
         }
     </script>

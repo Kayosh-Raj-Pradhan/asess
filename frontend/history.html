@@ -112,6 +112,12 @@
                 html += '</tbody></table></div>';
                 container.innerHTML = html;
 
+                const pid = new URLSearchParams(window.location.search).get('patient_id');
+                if (pid) {
+                    document.getElementById('scanSearchInput').value = pid;
+                    filterScanTable();
+                }
+
             } catch(err) {
                 container.innerHTML = `
                     <div style="text-align:center; padding:32px;">
@@ -197,6 +203,7 @@
                                 <th>Color Vision</th>
                                 <th>Visual Acuity</th>
                                 <th>Contrast</th>
+                                <th>Perception</th>
                                 <th>Overall</th>
                                 <th>Screened By</th>
                                 <th>Action</th>
@@ -208,15 +215,17 @@
                 const ishStyle = 'color:#1565c0; font-weight:600;';
                 const snStyle = 'color:#1565c0; font-weight:600;';
                 const ctStyle = 'color:#1565c0; font-weight:600;';
+                const percStyle = 'color:#1565c0; font-weight:600;';
                 const overallStyle = 'color:#1565c0; font-weight:600;';
 
                 tableHtml += `
-                    <tr>
+                    <tr id="eye-test-row-${entry.id}">
                         <td>${entry.date}</td>
                         <td><strong>${entry.patientName}</strong></td>
                         <td style="${ishStyle}">${entry.ishihara.status || '—'}</td>
                         <td style="${snStyle}">${entry.snellen.acuity || '—'}</td>
                         <td style="${ctStyle}">${entry.contrast.status || '—'}</td>
+                        <td style="${percStyle}">${(entry.perception && entry.perception.status) || (entry.blindness && entry.blindness.status) || '—'}</td>
                         <td style="${overallStyle}">${entry.overallStatus}</td>
                         <td style="color:#334155;">${entry.screenedBy}</td>
                         <td>
@@ -230,6 +239,12 @@
 
             tableHtml += '</tbody></table></div>';
             container.innerHTML = tableHtml;
+
+            const pid = new URLSearchParams(window.location.search).get('patient_id');
+            if (pid) {
+                document.getElementById('eyeTestSearchInput').value = pid;
+                filterEyeTestTable();
+            }
         }
 
         loadEyeTestHistory();
@@ -262,12 +277,24 @@
 
             document.getElementById('confirmDeleteEyeTestBtn').addEventListener('click', () => {
                 let history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
-                history = history.filter(entry => entry.id !== testId);
+                const targetId = String(testId).trim();
+                history = history.filter(entry => String(entry.id).trim() !== targetId);
                 localStorage.setItem('eyeTestHistory', JSON.stringify(history));
                 
                 closeDeleteEyeTestModal();
                 showToast('Eye test deleted successfully', 'success');
-                loadEyeTestHistory();
+                
+                const row = document.getElementById('eye-test-row-' + testId);
+                if (row) {
+                    row.style.opacity = '0';
+                    row.style.transition = 'opacity 0.3s';
+                    setTimeout(() => {
+                        row.remove();
+                        if (history.length === 0) loadEyeTestHistory();
+                    }, 300);
+                } else {
+                    loadEyeTestHistory();
+                }
             });
         }
 

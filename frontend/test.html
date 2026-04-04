@@ -218,13 +218,7 @@
                         <input type="text" id="patientName" placeholder="Enter patient name" required
                             style="width:100%; padding:10px 14px; border:1.5px solid var(--card-border); border-radius:10px; background:#f8fafc; color:var(--headline); font-size:0.95rem; font-family:var(--font);">
                     </div>
-                    <div style="flex:1; min-width:200px;">
-                        <label
-                            style="display:block; margin-bottom:6px; color:var(--subhead); font-weight:600; font-size:0.85rem;">Patient
-                            ID *</label>
-                        <input type="text" id="patientId" placeholder="Patient ID (e.g. ABC123)" required
-                            style="width:100%; padding:10px 14px; border:1.5px solid var(--card-border); border-radius:10px; background:#f8fafc; color:var(--headline); font-size:0.95rem; font-family:var(--font);">
-                    </div>
+                    <input type="hidden" id="patientId">
                     <button class="btn btn-primary" id="startTestsBtn" style="padding:10px 28px;">Start Tests</button>
                 </div>
             </div>
@@ -475,16 +469,42 @@
             }
         })();
 
-        document.getElementById('startTestsBtn').addEventListener('click', () => {
+        // Parse URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('patient_name')) {
+            document.getElementById('patientName').value = urlParams.get('patient_name');
+        }
+        if (urlParams.get('patient_id')) {
+            document.getElementById('patientId').value = urlParams.get('patient_id');
+        }
+
+        document.getElementById('startTestsBtn').addEventListener('click', async () => {
             const pn = document.getElementById('patientName').value.trim();
-            const pid = document.getElementById('patientId').value.trim();
+            let pid = document.getElementById('patientId').value.trim();
             if (!pn) { showToast('Please enter patient name', 'warning'); document.getElementById('patientName').focus(); return; }
-            if (!pid) { showToast('Please enter patient ID', 'warning'); document.getElementById('patientId').focus(); return; }
-            if (!/^[A-Za-z]{3}[0-9]{3}$/.test(pid)) { showToast('Patient ID must be 3 letters + 3 numbers (e.g. ABC123)', 'warning'); document.getElementById('patientId').focus(); return; }
-            // Check for duplicate patient ID in eye test history
-            const existingTests = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
-            const duplicate = existingTests.find(t => t.patientId && t.patientId.toUpperCase() === pid.toUpperCase() && t.patientName.toLowerCase() !== pn.toLowerCase());
-            if (duplicate) { showToast(`Patient ID ${pid.toUpperCase()} is already assigned to "${duplicate.patientName}"`, 'warning'); document.getElementById('patientId').focus(); return; }
+            
+            if (!pid) {
+                // Try from local storage
+                const existingTests = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
+                const foundTest = existingTests.find(t => t.patientName.toLowerCase() === pn.toLowerCase());
+                if (foundTest && foundTest.patientId) {
+                    pid = foundTest.patientId;
+                } else {
+                    try {
+                        const resp = await fetch('/ai/scans');
+                        if (resp.ok) {
+                            const scans = await resp.json();
+                            const foundScan = scans.find(s => s.patient_name.toLowerCase() === pn.toLowerCase());
+                            if (foundScan && foundScan.patient_id) pid = foundScan.patient_id;
+                        }
+                    } catch(e) {}
+                }
+                if (!pid) {
+                    pid = 'PAT' + Math.floor(Math.random() * 9000 + 1000); // e.g. PAT1234
+                }
+                document.getElementById('patientId').value = pid;
+            }
+
             document.getElementById('testArea').style.display = 'block';
             document.getElementById('patientCard').style.display = 'none';
             buildProgress();
@@ -966,7 +986,7 @@
                 ishihara: results.ishihara,
                 snellen: results.snellen,
                 contrast: results.contrast,
-                blindness: results.blindness,
+                perception: results.perception,
                 overallStatus: issues.length === 0 ? 'Normal' : 'Issues Found',
                 overallIssues: issues,
                 doctorNotes: ''
