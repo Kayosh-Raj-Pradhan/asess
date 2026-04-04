@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASESS | General Eye Test</title>
-    <meta name="description" content="Interactive eye tests including color vision, visual acuity, contrast sensitivity, and blindness screening.">
+    <meta name="description"
+        content="Interactive eye tests including color vision, visual acuity, contrast sensitivity, and blindness screening.">
     <link rel="icon" href="/assets/images/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -20,8 +22,9 @@
             color: #ffffff;
             font-family: Arial, sans-serif;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
+
         .ish-progress-bar {
             height: 8px;
             background: #ffffff;
@@ -30,33 +33,39 @@
             border-radius: 4px;
             overflow: hidden;
         }
+
         .ish-progress-fill {
             height: 100%;
             background: #50b887;
             transition: width 0.4s ease;
         }
+
         .ish-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 32px;
             align-items: center;
         }
+
         .ish-plate-wrap {
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
         .ish-plate-wrap img {
             width: 100%;
             max-width: 340px;
             border-radius: 50%;
-            box-shadow: 0 0 16px rgba(0,0,0,0.8);
+            box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
         }
+
         .ish-numpad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
+
         .ish-num-btn {
             padding: 20px 10px;
             font-size: 1.4rem;
@@ -70,11 +79,30 @@
             text-align: center;
             font-family: inherit;
         }
-        .ish-num-btn:hover { background: #366565; }
-        .ish-num-btn:active { background: #284a4a; }
-        .ish-num-btn.skip-btn, .ish-num-btn.end-btn { font-size: 1.1rem; }
-        .ish-num-btn.selected-correct { background: #50b887 !important; color: #ffffff !important; }
-        .ish-num-btn.selected-wrong { background: #ef4444 !important; color: #ffffff !important; }
+
+        .ish-num-btn:hover {
+            background: #366565;
+        }
+
+        .ish-num-btn:active {
+            background: #284a4a;
+        }
+
+        .ish-num-btn.skip-btn,
+        .ish-num-btn.end-btn {
+            font-size: 1.1rem;
+        }
+
+        .ish-num-btn.selected-correct {
+            background: #50b887 !important;
+            color: #ffffff !important;
+        }
+
+        .ish-num-btn.selected-wrong {
+            background: #ef4444 !important;
+            color: #ffffff !important;
+        }
+
         .ish-note {
             text-align: center;
             color: #ffffff;
@@ -82,6 +110,7 @@
             margin-top: 32px;
             font-weight: 400;
         }
+
         /* Blindness test */
         .blind-container {
             background: #0f172a;
@@ -89,8 +118,9 @@
             border-radius: 12px;
             color: #ffffff;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
+
         .blind-img-wrap {
             display: flex;
             align-items: center;
@@ -98,18 +128,21 @@
             padding: 20px;
             margin-bottom: 20px;
         }
+
         .blind-img-wrap img {
             max-width: 100%;
             max-height: 320px;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         }
+
         .blind-options {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             margin-top: 16px;
         }
+
         .blind-opt-btn {
             padding: 14px 20px;
             font-size: 1rem;
@@ -122,37 +155,75 @@
             transition: all 0.2s;
             font-family: inherit;
         }
-        .blind-opt-btn:hover { border-color: #0d9488; background: #0f172a; }
-        .blind-opt-btn.correct { border-color: #0d9488; background: rgba(13,148,136,0.15); color: #14b8a6; }
-        .blind-opt-btn.wrong { border-color: #ef4444; background: rgba(239,68,68,0.15); color: #f87171; }
+
+        .blind-opt-btn:hover {
+            border-color: #0d9488;
+            background: #0f172a;
+        }
+
+        .blind-opt-btn.correct {
+            border-color: #0d9488;
+            background: rgba(13, 148, 136, 0.15);
+            color: #14b8a6;
+        }
+
+        .blind-opt-btn.wrong {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
         @media (max-width: 768px) {
-            .ish-container { padding: 20px; }
-            .ish-layout { grid-template-columns: 1fr; }
-            .ish-plate-wrap img { max-width: 240px; }
-            .ish-num-btn { padding: 16px 10px; font-size: 1.1rem; }
-            .blind-options { grid-template-columns: 1fr; }
+            .ish-container {
+                padding: 20px;
+            }
+
+            .ish-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .ish-plate-wrap img {
+                max-width: 240px;
+            }
+
+            .ish-num-btn {
+                padding: 16px 10px;
+                font-size: 1.1rem;
+            }
+
+            .blind-options {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body class="bg-eyetest">
     <div id="main-wrapper">
         <div id="header-placeholder"></div>
 
         <div class="container page-container">
             <h2 style="text-align:center; margin-bottom:8px; color: #ffffff;">General Eye Screening</h2>
-            <p style="text-align:center; margin-bottom:28px; color: rgba(255,255,255,0.85);">Interactive vision tests with instant report generation</p>
+            <p style="text-align:center; margin-bottom:28px; color: rgba(255,255,255,0.85);">Interactive vision tests
+                with instant report generation</p>
 
             <!-- Patient Info -->
             <div class="card" id="patientCard">
                 <h3>Patient Information</h3>
                 <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
                     <div style="flex:1; min-width:200px;">
-                        <label style="display:block; margin-bottom:6px; color:var(--subhead); font-weight:600; font-size:0.85rem;">Patient Name *</label>
-                        <input type="text" id="patientName" placeholder="Enter patient name" required style="width:100%; padding:10px 14px; border:1.5px solid var(--card-border); border-radius:10px; background:#f8fafc; color:var(--headline); font-size:0.95rem; font-family:var(--font);">
+                        <label
+                            style="display:block; margin-bottom:6px; color:var(--subhead); font-weight:600; font-size:0.85rem;">Patient
+                            Name *</label>
+                        <input type="text" id="patientName" placeholder="Enter patient name" required
+                            style="width:100%; padding:10px 14px; border:1.5px solid var(--card-border); border-radius:10px; background:#f8fafc; color:var(--headline); font-size:0.95rem; font-family:var(--font);">
                     </div>
                     <div style="flex:1; min-width:200px;">
-                        <label style="display:block; margin-bottom:6px; color:var(--subhead); font-weight:600; font-size:0.85rem;">Patient ID <span style="font-size:0.75rem; color:#1565c0; background:#e0f2fe; padding:1px 8px; border-radius:10px; margin-left:4px;">Auto-generated</span></label>
-                        <input type="text" id="patientId" readonly style="width:100%; padding:10px 14px; border:1.5px solid var(--card-border); border-radius:10px; background:#f0f4ff; color:#1565c0; font-size:0.95rem; font-weight:600; cursor:not-allowed; font-family:var(--font);">
+                        <label
+                            style="display:block; margin-bottom:6px; color:var(--subhead); font-weight:600; font-size:0.85rem;">Patient
+                            ID *</label>
+                        <input type="text" id="patientId" placeholder="Patient ID (e.g. ABC123)" required
+                            style="width:100%; padding:10px 14px; border:1.5px solid var(--card-border); border-radius:10px; background:#f8fafc; color:var(--headline); font-size:0.95rem; font-family:var(--font);">
                     </div>
                     <button class="btn btn-primary" id="startTestsBtn" style="padding:10px 28px;">Start Tests</button>
                 </div>
@@ -171,11 +242,15 @@
                 <!-- Test 1: Ishihara Color Blind -->
                 <div class="test-panel" id="test-ishihara">
                     <div class="ish-container">
-                        <div class="ish-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <div class="ish-header"
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                             <h3 style="margin:0; font-size:1.4rem; color:#ffffff;">Ishihara Test</h3>
-                            <span style="font-size:0.9rem; color:#aaaaaa;">Plate <strong id="plateCounter" style="color:#ffffff;">1</strong> / <span id="totalPlates">14</span></span>
+                            <span style="font-size:0.9rem; color:#aaaaaa;">Plate <strong id="plateCounter"
+                                    style="color:#ffffff;">1</strong> / <span id="totalPlates">14</span></span>
                         </div>
-                        <div class="ish-progress-bar"><div class="ish-progress-fill" id="ishProgressFill" style="width:0%"></div></div>
+                        <div class="ish-progress-bar">
+                            <div class="ish-progress-fill" id="ishProgressFill" style="width:0%"></div>
+                        </div>
 
                         <div class="ish-layout">
                             <div class="ish-plate-wrap">
@@ -198,9 +273,11 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="ish-note"><strong>Note:</strong> Please select the correct option you see in the image. Please try to choose within 3 sec.</p>
-                        
-                        <div id="ishiharaResultsPanel" style="display:none; margin-top:30px; padding:20px; background:#112222; border-radius:10px; border:1px solid #437e7e;">
+                        <p class="ish-note"><strong>Note:</strong> Please select the correct option you see in the
+                            image. Please try to choose within 3 sec.</p>
+
+                        <div id="ishiharaResultsPanel"
+                            style="display:none; margin-top:30px; padding:20px; background:#112222; border-radius:10px; border:1px solid #437e7e;">
                             <h3 style="font-size:1.1rem; margin-bottom:12px; color:#50b887;">Results</h3>
                             <div id="ishiharaResults" style="color:#ffffff; font-size:0.95rem;"></div>
                         </div>
@@ -214,19 +291,25 @@
                 <!-- Test 2: Snellen Visual Acuity -->
                 <div class="card test-panel" id="test-snellen" style="display:none;">
                     <h3>Visual Acuity Test (Snellen)</h3>
-                    <p style="margin-bottom:16px; color:var(--card-para);">Read the letters displayed below. Sit ~40cm from screen.</p>
+                    <p style="margin-bottom:16px; color:var(--card-para);">Read the letters displayed below. Sit ~40cm
+                        from screen.</p>
                     <div class="test-layout">
                         <div>
                             <div class="snellen-letter" id="snellenDisplay">E</div>
                             <div style="margin-bottom:12px;">
-                                <label style="color:var(--subhead); font-weight:600; font-size:0.85rem;">Type what you see:</label>
-                                <input type="text" id="snellenInput" maxlength="10" style="width:100%; padding:10px 14px; margin-top:6px; border:1.5px solid var(--card-border); border-radius:10px; background:#f8fafc; color:var(--headline); font-size:1.1rem; text-transform:uppercase; letter-spacing:0.2em; font-family:var(--font);">
+                                <label style="color:var(--subhead); font-weight:600; font-size:0.85rem;">Type what you
+                                    see:</label>
+                                <input type="text" id="snellenInput" maxlength="10"
+                                    style="width:100%; padding:10px 14px; margin-top:6px; border:1.5px solid var(--card-border); border-radius:10px; background:#f8fafc; color:var(--headline); font-size:1.1rem; text-transform:uppercase; letter-spacing:0.2em; font-family:var(--font);">
                             </div>
-                            <button class="btn btn-primary" id="snellenSubmit" style="width:100%;">Submit Answer</button>
+                            <button class="btn btn-primary" id="snellenSubmit" style="width:100%;">Submit
+                                Answer</button>
                         </div>
-                        <div class="card" style="background:var(--bg-alt); border:1px solid var(--card-border); box-shadow:none;">
+                        <div class="card"
+                            style="background:var(--bg-alt); border:1px solid var(--card-border); box-shadow:none;">
                             <h3 style="font-size:0.95rem;">Results</h3>
-                            <div id="snellenResults" style="color:var(--card-para); font-size:0.9rem;">Complete all rows to see results.</div>
+                            <div id="snellenResults" style="color:var(--card-para); font-size:0.9rem;">Complete all rows
+                                to see results.</div>
                         </div>
                     </div>
                     <div style="text-align:right; margin-top:16px;">
@@ -237,19 +320,25 @@
                 <!-- Test 3: Contrast Sensitivity -->
                 <div class="card test-panel" id="test-contrast" style="display:none;">
                     <h3>Contrast Sensitivity Test</h3>
-                    <p style="margin-bottom:16px; color:var(--card-para);">Can you see the letter in the box below? Answer Yes or No for each level.</p>
+                    <p style="margin-bottom:16px; color:var(--card-para);">Can you see the letter in the box below?
+                        Answer Yes or No for each level.</p>
                     <div class="test-layout">
                         <div>
-                            <div class="contrast-box" id="contrastDisplay" style="background:#111; color:rgba(255,255,255,0.5);">C</div>
+                            <div class="contrast-box" id="contrastDisplay"
+                                style="background:#111; color:rgba(255,255,255,0.5);">C</div>
                             <div class="test-options">
                                 <button class="test-opt-btn" onclick="contrastAnswer(true)">✅ Yes, I can see it</button>
-                                <button class="test-opt-btn" onclick="contrastAnswer(false)">❌ No, I can't see it</button>
+                                <button class="test-opt-btn" onclick="contrastAnswer(false)">❌ No, I can't see
+                                    it</button>
                             </div>
-                            <p style="color:var(--card-para); font-size:0.85rem; margin-top:8px;">Level: <strong id="contrastLevel">1</strong> / 8</p>
+                            <p style="color:var(--card-para); font-size:0.85rem; margin-top:8px;">Level: <strong
+                                    id="contrastLevel">1</strong> / 8</p>
                         </div>
-                        <div class="card" style="background:var(--bg-alt); border:1px solid var(--card-border); box-shadow:none;">
+                        <div class="card"
+                            style="background:var(--bg-alt); border:1px solid var(--card-border); box-shadow:none;">
                             <h3 style="font-size:0.95rem;">Results</h3>
-                            <div id="contrastResults" style="color:var(--card-para); font-size:0.9rem;">Complete all levels to see results.</div>
+                            <div id="contrastResults" style="color:var(--card-para); font-size:0.9rem;">Complete all
+                                levels to see results.</div>
                         </div>
                     </div>
                     <div style="text-align:right; margin-top:16px;">
@@ -260,21 +349,30 @@
                 <!-- Test 4: Visual Perception Test -->
                 <div class="test-panel" id="test-perception" style="display:none;">
                     <div class="blind-container">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                             <h3 style="margin:0; font-size:1.4rem; color:#ffffff;">Visual Perception Test</h3>
-                            <span style="font-size:0.9rem; color:#94a3b8;">Question <strong id="percCounter" style="color:#ffffff;">1</strong> / <span id="percTotal">8</span></span>
+                            <span style="font-size:0.9rem; color:#94a3b8;">Question <strong id="percCounter"
+                                    style="color:#ffffff;">1</strong> / <span id="percTotal">8</span></span>
                         </div>
-                        <div class="ish-progress-bar"><div class="ish-progress-fill" id="percProgressFill" style="width:0%"></div></div>
+                        <div class="ish-progress-bar">
+                            <div class="ish-progress-fill" id="percProgressFill" style="width:0%"></div>
+                        </div>
 
                         <div style="display:flex; justify-content:center; margin:24px 0;">
-                            <canvas id="percCanvas" width="360" height="360" style="background:#0f172a; border-radius:12px; border:2px solid #334155; max-width:100%;"></canvas>
+                            <canvas id="percCanvas" width="360" height="360"
+                                style="background:#0f172a; border-radius:12px; border:2px solid #334155; max-width:100%;"></canvas>
                         </div>
 
-                        <p style="text-align:center; color:#e2e8f0; margin-bottom:16px; font-size:1rem; font-weight:600;" id="percQuestion">Which direction is the gap?</p>
+                        <p style="text-align:center; color:#e2e8f0; margin-bottom:16px; font-size:1rem; font-weight:600;"
+                            id="percQuestion">Which direction is the gap?</p>
 
-                        <div id="percOptions" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:16px;"></div>
+                        <div id="percOptions"
+                            style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:16px;">
+                        </div>
 
-                        <div id="percResultsPanel" style="display:none; margin-top:24px; padding:20px; background:#1e293b; border-radius:10px; border:1px solid #334155;">
+                        <div id="percResultsPanel"
+                            style="display:none; margin-top:24px; padding:20px; background:#1e293b; border-radius:10px; border:1px solid #334155;">
                             <h3 style="font-size:1.1rem; margin-bottom:12px; color:#14b8a6;">Results</h3>
                             <div id="percResults" style="color:#e2e8f0; font-size:0.95rem;"></div>
                         </div>
@@ -289,14 +387,20 @@
             <!-- Report (hidden until all tests complete) -->
             <div id="reportSection" style="display:none;">
                 <div class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
                         <h2 style="margin:0;">📋 Eye Test Report</h2>
-                        <button class="btn btn-primary" onclick="window.print()" style="padding:8px 20px; font-size:0.9rem;">🖨️ Print Report</button>
+                        <button class="btn btn-primary" onclick="window.print()"
+                            style="padding:8px 20px; font-size:0.9rem;">🖨️ Print Report</button>
                     </div>
-                    <div class="detail-row"><span class="detail-label">Patient Name</span><span class="detail-value" id="rptName">—</span></div>
-                    <div class="detail-row"><span class="detail-label">Patient ID</span><span class="detail-value" id="rptPatientId">—</span></div>
-                    <div class="detail-row"><span class="detail-label">Date</span><span class="detail-value" id="rptDate">—</span></div>
-                    <div class="detail-row"><span class="detail-label">Screened By</span><span class="detail-value" id="rptDoctor">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Patient Name</span><span class="detail-value"
+                            id="rptName">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Patient ID</span><span class="detail-value"
+                            id="rptPatientId">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Date</span><span class="detail-value"
+                            id="rptDate">—</span></div>
+                    <div class="detail-row"><span class="detail-label">Screened By</span><span class="detail-value"
+                            id="rptDoctor">—</span></div>
                 </div>
 
                 <div class="card">
@@ -321,9 +425,12 @@
                 </div>
                 <div class="card">
                     <h3>Doctor's Notes</h3>
-                    <div class="notes-label"><span>📝</span> <span id="notesAccessLabel">Only doctors can add notes</span></div>
-                    <textarea class="notes-area" id="doctorNotes" placeholder="Add clinical observations, recommendations..." disabled></textarea>
-                    <button class="btn btn-primary" id="saveNotesBtn" style="margin-top:12px; display:none; padding:8px 24px; font-size:0.9rem;">Save Notes</button>
+                    <div class="notes-label"><span>📝</span> <span id="notesAccessLabel">Only doctors can add
+                            notes</span></div>
+                    <textarea class="notes-area" id="doctorNotes"
+                        placeholder="Add clinical observations, recommendations..." disabled></textarea>
+                    <button class="btn btn-primary" id="saveNotesBtn"
+                        style="margin-top:12px; display:none; padding:8px 24px; font-size:0.9rem;">Save Notes</button>
                 </div>
             </div>
         </div>
@@ -335,578 +442,543 @@
     <script src="/js/toast.js"></script>
     <script src="/js/script.js"></script>
     <script>
-    // Role guard: superadmin cannot access Eye Test
-    (function() {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                if (payload.role === 'superadmin') {
-                    window.location.href = '/index';
-                    return;
-                }
-            } catch(e) {}
+        // Role guard: superadmin cannot access Eye Test
+        (function () {
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    if (payload.role === 'superadmin') {
+                        window.location.href = '/index';
+                        return;
+                    }
+                } catch (e) { }
+            }
+        })();
+
+        // ===== Eye Test Engine =====
+        const TESTS = ['ishihara', 'snellen', 'contrast', 'perception'];
+        let currentTest = 0;
+        const results = { ishihara: {}, snellen: {}, contrast: {}, perception: {} };
+        let userRole = 'staff';
+        let userName = '';
+
+        // Auth check & role
+        (async () => {
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                try {
+                    const u = await apiRequest('/users/me', 'GET');
+                    userRole = u.role;
+                    userName = u.full_name || u.username;
+                } catch (e) { }
+            }
+        })();
+
+        document.getElementById('startTestsBtn').addEventListener('click', () => {
+            const pn = document.getElementById('patientName').value.trim();
+            const pid = document.getElementById('patientId').value.trim();
+            if (!pn) { showToast('Please enter patient name', 'warning'); document.getElementById('patientName').focus(); return; }
+            if (!pid) { showToast('Please enter patient ID', 'warning'); document.getElementById('patientId').focus(); return; }
+            if (!/^[A-Za-z]{3}[0-9]{3}$/.test(pid)) { showToast('Patient ID must be 3 letters + 3 numbers (e.g. ABC123)', 'warning'); document.getElementById('patientId').focus(); return; }
+            // Check for duplicate patient ID in eye test history
+            const existingTests = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
+            const duplicate = existingTests.find(t => t.patientId && t.patientId.toUpperCase() === pid.toUpperCase() && t.patientName.toLowerCase() !== pn.toLowerCase());
+            if (duplicate) { showToast(`Patient ID ${pid.toUpperCase()} is already assigned to "${duplicate.patientName}"`, 'warning'); document.getElementById('patientId').focus(); return; }
+            document.getElementById('testArea').style.display = 'block';
+            document.getElementById('patientCard').style.display = 'none';
+            buildProgress();
+            initIshihara();
+            window.scrollTo({ top: document.getElementById('testArea').offsetTop - 80, behavior: 'smooth' });
+        });
+
+        function buildProgress() {
+            const d = document.getElementById('progressDots');
+            d.innerHTML = '';
+            TESTS.forEach((t, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'test-dot' + (i === 0 ? ' active' : '');
+                dot.id = 'dot-' + i;
+                d.appendChild(dot);
+            });
+            updateTitle();
         }
-    })();
-
-    // ===== Eye Test Engine =====
-    const TESTS = ['ishihara', 'snellen', 'contrast', 'perception'];
-    let currentTest = 0;
-    const results = { ishihara: {}, snellen: {}, contrast: {}, perception: {} };
-    let userRole = 'staff';
-    let userName = '';
-
-    // Auth check & role
-    (async () => {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-            try {
-                const u = await apiRequest('/users/me', 'GET');
-                userRole = u.role;
-                userName = u.full_name || u.username;
-            } catch(e) {}
+        function updateTitle() {
+            document.getElementById('testTitle').textContent = `Test ${currentTest + 1} of ${TESTS.length}`;
         }
-    })();
+        function goToTest(idx) {
+            document.querySelectorAll('.test-panel').forEach(p => p.style.display = 'none');
+            document.getElementById('test-' + TESTS[idx]).style.display = 'block';
+            document.querySelectorAll('.test-dot').forEach((d, i) => {
+                d.className = 'test-dot' + (i < idx ? ' done' : '') + (i === idx ? ' active' : '');
+            });
+            currentTest = idx;
+            updateTitle();
+        }
 
-    // ───── Auto-generate Patient ID or pre-fill from URL (Scan Again) ─────
-    (async function initPatientInfo() {
-        const params = new URLSearchParams(window.location.search);
-        const urlName = params.get('patientName');
-        const urlId = params.get('patientId');
+        // ===== Ishihara (Local Plates from blindness test folder) =====
+        const ishiharaPlates = [
+            { img: '/assets/images/blindness test/1-light.png', normal: '1', difficulty: 'light' },
+            { img: '/assets/images/blindness test/1-light2.png', normal: '1', difficulty: 'light' },
+            { img: '/assets/images/blindness test/1-dark.png', normal: '1', difficulty: 'dark' },
+            { img: '/assets/images/blindness test/2-light.png', normal: '2', difficulty: 'light' },
+            { img: '/assets/images/blindness test/2-dark.png', normal: '2', difficulty: 'dark' },
+            { img: '/assets/images/blindness test/3-light.png', normal: '3', difficulty: 'light' },
+            { img: '/assets/images/blindness test/3-med.png', normal: '3', difficulty: 'medium' },
+            { img: '/assets/images/blindness test/3-dark.png', normal: '3', difficulty: 'dark' },
+            { img: '/assets/images/blindness test/4-light.png', normal: '4', difficulty: 'light' },
+            { img: '/assets/images/blindness test/4-light2.png', normal: '4', difficulty: 'light' },
+            { img: '/assets/images/blindness test/4-med.png', normal: '4', difficulty: 'medium' },
+            { img: '/assets/images/blindness test/4-med2.png', normal: '4', difficulty: 'medium' },
+            { img: '/assets/images/blindness test/5-light.png', normal: '5', difficulty: 'light' },
+            { img: '/assets/images/blindness test/5-light (1).png', normal: '5', difficulty: 'light' },
+            { img: '/assets/images/blindness test/5-med.png', normal: '5', difficulty: 'medium' },
+            { img: '/assets/images/blindness test/6-light.png', normal: '6', difficulty: 'light' },
+            { img: '/assets/images/blindness test/6-light2.png', normal: '6', difficulty: 'light' },
+            { img: '/assets/images/blindness test/6-dark.png', normal: '6', difficulty: 'dark' },
+            { img: '/assets/images/blindness test/7-light.png', normal: '7', difficulty: 'light' },
+            { img: '/assets/images/blindness test/7-med.png', normal: '7', difficulty: 'medium' },
+            { img: '/assets/images/blindness test/7-dark.png', normal: '7', difficulty: 'dark' },
+            { img: '/assets/images/blindness test/8-light.png', normal: '8', difficulty: 'light' },
+            { img: '/assets/images/blindness test/8-light2.png', normal: '8', difficulty: 'light' },
+            { img: '/assets/images/blindness test/8-dark.png', normal: '8', difficulty: 'dark' },
+            { img: '/assets/images/blindness test/9-light.png', normal: '9', difficulty: 'light' },
+        ];
 
-        if (urlName && urlId) {
-            // "Scan Again" / existing patient flow
-            document.getElementById('patientName').value = urlName;
-            document.getElementById('patientId').value = urlId;
-            document.getElementById('patientName').setAttribute('readonly', true);
-            document.getElementById('patientName').style.background = '#f0f4ff';
-            document.getElementById('patientName').style.color = '#1565c0';
-            document.getElementById('patientName').style.fontWeight = '600';
-            document.getElementById('patientName').style.cursor = 'not-allowed';
-        } else {
-            // New patient: auto-generate next patient ID
-            try {
-                const resp = await fetch('/ai/next-patient-id');
-                if (resp.ok) {
-                    const data = await resp.json();
-                    document.getElementById('patientId').value = data.patient_id;
+        let ishPlateIdx = 0, ishCorrect = 0, ishAnswers = [], ishDone = false, ishInputBuffer = '', ishInputTimeout = null;
+
+        function initIshihara() {
+            ishPlateIdx = 0; ishCorrect = 0; ishAnswers = []; ishDone = false; ishInputBuffer = '';
+            // Shuffle plates randomly (Fisher-Yates)
+            for (let i = ishiharaPlates.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [ishiharaPlates[i], ishiharaPlates[j]] = [ishiharaPlates[j], ishiharaPlates[i]];
+            }
+            document.getElementById('totalPlates').textContent = ishiharaPlates.length;
+            showIshiharaPlate();
+        }
+
+        function showIshiharaPlate() {
+            if (ishPlateIdx >= ishiharaPlates.length) { finishIshihara(); return; }
+            const plate = ishiharaPlates[ishPlateIdx];
+            document.getElementById('ishiharaImg').src = plate.img;
+            document.getElementById('plateCounter').textContent = ishPlateIdx + 1;
+            document.getElementById('ishProgressFill').style.width = ((ishPlateIdx / ishiharaPlates.length) * 100) + '%';
+            ishInputBuffer = '';
+            document.querySelectorAll('.ish-num-btn').forEach(b => { b.disabled = false; b.classList.remove('selected-correct', 'selected-wrong'); });
+        }
+
+        function ishiharaPick(val) {
+            if (ishDone) return;
+            if (val === 'skip') {
+                ishAnswers.push({ plateIdx: ishPlateIdx, given: 'skip', correct: ishiharaPlates[ishPlateIdx].normal, isCorrect: false, type: ishiharaPlates[ishPlateIdx].type });
+                ishPlateIdx++; showIshiharaPlate(); return;
+            }
+            ishInputBuffer += val;
+            const expected = ishiharaPlates[ishPlateIdx].normal;
+            if (expected.length === 1 || ishInputBuffer.length >= 2) { submitIshiharaAnswer(); }
+            else { clearTimeout(ishInputTimeout); ishInputTimeout = setTimeout(() => submitIshiharaAnswer(), 1500); }
+        }
+
+        function submitIshiharaAnswer() {
+            clearTimeout(ishInputTimeout);
+            const plate = ishiharaPlates[ishPlateIdx];
+            const given = ishInputBuffer, expected = plate.normal, isCorrect = given === expected;
+            if (isCorrect) ishCorrect++;
+            ishAnswers.push({ plateIdx: ishPlateIdx, given, correct: expected, isCorrect, type: plate.type, protan: plate.protan, deutan: plate.deutan });
+            document.querySelectorAll('.ish-num-btn').forEach(b => b.disabled = true);
+            setTimeout(() => { ishPlateIdx++; showIshiharaPlate(); }, 600);
+        }
+
+        function ishiharaEnd() {
+            if (ishAnswers.length === 0) { showToast('Please answer at least one plate before ending', 'warning'); return; }
+            finishIshihara();
+        }
+
+        function finishIshihara() {
+            ishDone = true;
+            const total = ishAnswers.length, correct = ishAnswers.filter(a => a.isCorrect).length;
+            const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+            document.getElementById('ishProgressFill').style.width = '100%';
+
+            let cbType = 'Normal Color Vision', cbSeverity = 'None';
+            if (pct < 80) {
+                cbType = 'Color Vision Deficiency';
+                const missRate = ((total - correct) / total) * 100;
+                if (missRate > 60) cbSeverity = 'Strong';
+                else if (missRate > 30) cbSeverity = 'Moderate';
+                else cbSeverity = 'Mild';
+            }
+
+            results.ishihara = { correct, total, pct, status: pct >= 80 ? 'Normal' : 'Deficient', colorBlindType: cbType, severity: cbSeverity, answers: ishAnswers.map(a => ({ given: a.given, correct: a.correct, isCorrect: a.isCorrect })) };
+
+            const panel = document.getElementById('ishiharaResultsPanel');
+            panel.style.display = 'block';
+            let html = `<p>Plates Answered: <strong>${total}</strong> | Correct: <strong>${correct}</strong> (${pct}%)</p>`;
+            html += `<p>Status: <strong style="color:${pct >= 80 ? '#14b8a6' : '#ef4444'}">${results.ishihara.status}</strong></p>`;
+            if (pct < 80) { html += `<p style="margin-top:8px;">Type: <strong style="color:#ef4444;">${cbType}</strong></p><p>Severity: <strong style="color:#f59e0b;">${cbSeverity}</strong></p>`; }
+            document.getElementById('ishiharaResults').innerHTML = html;
+            document.querySelector('.ish-layout').style.display = 'none';
+            document.querySelector('.ish-note').style.display = 'none';
+        }
+
+        document.getElementById('ishiharaNext').onclick = () => goToTest(1);
+
+        // ===== Snellen =====
+        const snellenRows = [
+            { letters: 'E', size: '5rem', acuity: '20/200' },
+            { letters: 'FP', size: '3.5rem', acuity: '20/100' },
+            { letters: 'TOZ', size: '2.5rem', acuity: '20/70' },
+            { letters: 'LPED', size: '2rem', acuity: '20/50' },
+            { letters: 'PECFD', size: '1.5rem', acuity: '20/40' },
+            { letters: 'EDFCZP', size: '1.1rem', acuity: '20/25' },
+            { letters: 'FELOPZD', size: '0.85rem', acuity: '20/20' },
+        ];
+        let snellenIdx = 0, snellenLastCorrect = '20/200';
+
+        function showSnellen() {
+            const row = snellenRows[snellenIdx];
+            document.getElementById('snellenDisplay').textContent = row.letters;
+            document.getElementById('snellenDisplay').style.fontSize = row.size;
+            document.getElementById('snellenInput').value = '';
+            document.getElementById('snellenInput').focus();
+        }
+        showSnellen();
+
+        document.getElementById('snellenSubmit').onclick = () => {
+            const input = document.getElementById('snellenInput').value.trim().toUpperCase();
+            const row = snellenRows[snellenIdx];
+            if (input === row.letters) { snellenLastCorrect = row.acuity; showToast(`Correct! Acuity: ${row.acuity}`, 'success'); }
+            else { showToast(`Incorrect. The letters were: ${row.letters}`, 'error'); }
+            snellenIdx++;
+            if (snellenIdx < snellenRows.length) { showSnellen(); }
+            else {
+                const isGood = ['20/20', '20/25'].includes(snellenLastCorrect);
+                results.snellen = { acuity: snellenLastCorrect, status: isGood ? 'Normal' : 'Below Normal' };
+                document.getElementById('snellenResults').innerHTML = `Best Acuity: <strong>${snellenLastCorrect}</strong> — <span style="color:${isGood ? '#0d9488' : '#0891b2'}; font-weight:600;">${results.snellen.status}</span>`;
+                document.getElementById('snellenDisplay').textContent = 'Test Complete';
+                document.getElementById('snellenDisplay').style.fontSize = '1.5rem';
+            }
+        };
+        document.getElementById('snellenInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('snellenSubmit').click(); });
+        document.getElementById('snellenNext').onclick = () => goToTest(2);
+
+        // ===== Contrast Sensitivity =====
+        let contrastLvl = 0;
+        const contrastLevels = [0.5, 0.35, 0.25, 0.18, 0.12, 0.08, 0.05, 0.03];
+        const contrastLetters = ['C', 'O', 'D', 'E', 'Z', 'S', 'N', 'K'];
+        let contrastLastSeen = 0;
+
+        function showContrast() {
+            document.getElementById('contrastDisplay').style.color = `rgba(255,255,255,${contrastLevels[contrastLvl]})`;
+            document.getElementById('contrastDisplay').textContent = contrastLetters[contrastLvl];
+            document.getElementById('contrastLevel').textContent = (contrastLvl + 1);
+        }
+        showContrast();
+
+        function contrastAnswer(canSee) {
+            if (canSee) contrastLastSeen = contrastLvl + 1;
+            contrastLvl++;
+            if (contrastLvl < contrastLevels.length) { showContrast(); }
+            else {
+                const pct = Math.round((contrastLastSeen / contrastLevels.length) * 100);
+                const status = contrastLastSeen >= 5 ? 'Normal' : contrastLastSeen >= 3 ? 'Mild Reduction' : 'Significant Reduction';
+                results.contrast = { levelsDetected: contrastLastSeen, total: contrastLevels.length, pct, status };
+                document.getElementById('contrastResults').innerHTML = `Detected ${contrastLastSeen}/${contrastLevels.length} levels (${pct}%) — <span style="color:${contrastLastSeen >= 5 ? '#0d9488' : '#0891b2'}; font-weight:600;">${status}</span>`;
+                document.getElementById('contrastDisplay').textContent = '✓';
+                document.getElementById('contrastDisplay').style.color = '#0d9488';
+            }
+        }
+
+        document.getElementById('contrastNext').onclick = () => goToTest(3);
+
+        // ===== Visual Perception Test (Canvas-based) =====
+        const perceptionQuestions = [
+            // Landolt C - gap detection
+            { type: 'landolt', gapDir: 'right', size: 120, thickness: 20 },
+            { type: 'landolt', gapDir: 'top', size: 100, thickness: 16 },
+            { type: 'landolt', gapDir: 'left', size: 80, thickness: 14 },
+            { type: 'landolt', gapDir: 'bottom', size: 60, thickness: 12 },
+            // Shape counting
+            { type: 'shapes', shape: 'circle', count: 7, distractors: 5 },
+            { type: 'shapes', shape: 'triangle', count: 5, distractors: 8 },
+            // Line orientation
+            { type: 'lines', angle: 45 },
+            { type: 'lines', angle: 135 },
+        ];
+        let percIdx = 0, percCorrect = 0, percAnswers = [];
+
+        function initPerception() {
+            percIdx = 0; percCorrect = 0; percAnswers = [];
+            document.getElementById('percTotal').textContent = perceptionQuestions.length;
+            document.getElementById('percResultsPanel').style.display = 'none';
+            document.getElementById('percOptions').style.display = 'flex';
+            showPerceptionQuestion();
+        }
+
+        function showPerceptionQuestion() {
+            if (percIdx >= perceptionQuestions.length) { finishPerception(); return; }
+            const q = perceptionQuestions[percIdx];
+            document.getElementById('percCounter').textContent = percIdx + 1;
+            document.getElementById('percProgressFill').style.width = ((percIdx / perceptionQuestions.length) * 100) + '%';
+            const canvas = document.getElementById('percCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const opts = document.getElementById('percOptions');
+            opts.innerHTML = '';
+
+            if (q.type === 'landolt') {
+                drawLandoltC(ctx, canvas.width / 2, canvas.height / 2, q.size, q.thickness, q.gapDir);
+                document.getElementById('percQuestion').textContent = 'Where is the gap in the ring?';
+                ['Top', 'Right', 'Bottom', 'Left'].forEach(dir => {
+                    const btn = document.createElement('button');
+                    btn.className = 'blind-opt-btn';
+                    btn.textContent = dir;
+                    btn.style.cssText = 'padding:12px 28px; background:#1e293b; color:#e2e8f0; border:1.5px solid #475569; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit; font-size:0.95rem; min-width:100px;';
+                    btn.onclick = () => percAnswer(dir.toLowerCase(), q.gapDir);
+                    opts.appendChild(btn);
+                });
+            } else if (q.type === 'shapes') {
+                const totalShapes = drawShapeCounting(ctx, canvas, q.shape, q.count, q.distractors);
+                document.getElementById('percQuestion').textContent = `How many ${q.shape}s can you count?`;
+                const correct = q.count;
+                const choices = [correct - 2, correct - 1, correct, correct + 1, correct + 2].filter(n => n > 0);
+                // Shuffle choices
+                choices.sort(() => Math.random() - 0.5);
+                choices.forEach(n => {
+                    const btn = document.createElement('button');
+                    btn.className = 'blind-opt-btn';
+                    btn.textContent = n;
+                    btn.style.cssText = 'padding:12px 28px; background:#1e293b; color:#e2e8f0; border:1.5px solid #475569; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit; font-size:1.1rem; min-width:60px;';
+                    btn.onclick = () => percAnswer(n.toString(), correct.toString());
+                    opts.appendChild(btn);
+                });
+            } else if (q.type === 'lines') {
+                drawLineOrientation(ctx, canvas, q.angle);
+                document.getElementById('percQuestion').textContent = 'What is the orientation of the main line?';
+                const options = [
+                    { label: '↗ 45°', val: '45' },
+                    { label: '→ 90°', val: '90' },
+                    { label: '↘ 135°', val: '135' },
+                    { label: '↓ 180°', val: '180' },
+                ];
+                options.forEach(o => {
+                    const btn = document.createElement('button');
+                    btn.className = 'blind-opt-btn';
+                    btn.textContent = o.label;
+                    btn.style.cssText = 'padding:12px 28px; background:#1e293b; color:#e2e8f0; border:1.5px solid #475569; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit; font-size:0.95rem; min-width:80px;';
+                    btn.onclick = () => percAnswer(o.val, q.angle.toString());
+                    opts.appendChild(btn);
+                });
+            }
+        }
+
+        function drawLandoltC(ctx, cx, cy, size, thickness, gapDir) {
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = thickness;
+            const r = size / 2;
+            const gapAngle = { top: -Math.PI / 2, right: 0, bottom: Math.PI / 2, left: Math.PI }[gapDir];
+            const gapSize = 0.4;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, gapAngle + gapSize, gapAngle + (2 * Math.PI) - gapSize);
+            ctx.stroke();
+        }
+
+        function drawShapeCounting(ctx, canvas, shape, count, distractors) {
+            const all = [];
+            // Draw target shapes
+            for (let i = 0; i < count; i++) {
+                const x = 30 + Math.random() * (canvas.width - 60);
+                const y = 30 + Math.random() * (canvas.height - 60);
+                all.push({ x, y, isTarget: true });
+            }
+            // Draw distractors (different shape)
+            for (let i = 0; i < distractors; i++) {
+                const x = 30 + Math.random() * (canvas.width - 60);
+                const y = 30 + Math.random() * (canvas.height - 60);
+                all.push({ x, y, isTarget: false });
+            }
+            // Shuffle and draw
+            all.sort(() => Math.random() - 0.5);
+            all.forEach(s => {
+                if (s.isTarget && shape === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, 14, 0, Math.PI * 2);
+                    ctx.fillStyle = '#38bdf8';
+                    ctx.fill();
+                } else if (s.isTarget && shape === 'triangle') {
+                    ctx.beginPath();
+                    ctx.moveTo(s.x, s.y - 16);
+                    ctx.lineTo(s.x - 14, s.y + 12);
+                    ctx.lineTo(s.x + 14, s.y + 12);
+                    ctx.closePath();
+                    ctx.fillStyle = '#34d399';
+                    ctx.fill();
                 } else {
-                    document.getElementById('patientId').value = 'PAT' + String(Date.now() % 1000).padStart(3, '0');
+                    // Distractor: squares
+                    ctx.fillStyle = '#f472b6';
+                    ctx.fillRect(s.x - 10, s.y - 10, 20, 20);
                 }
-            } catch(e) {
-                document.getElementById('patientId').value = 'PAT' + String(Date.now() % 1000).padStart(3, '0');
-            }
-        }
-    })();
-
-    document.getElementById('startTestsBtn').addEventListener('click', async () => {
-        const pn = document.getElementById('patientName').value.trim();
-        const pid = document.getElementById('patientId').value.trim();
-        if (!pn) { showToast('Please enter patient name', 'warning'); document.getElementById('patientName').focus(); return; }
-        if (!pid) { showToast('Patient ID not generated. Please refresh.', 'warning'); return; }
-
-        // Register patient in backend for consistency
-        try {
-            const formData = new FormData();
-            formData.append('patient_name', pn);
-            formData.append('patient_id', pid);
-            formData.append('created_by', userName || 'System');
-            await fetch('/ai/register-patient', { method: 'POST', body: formData });
-        } catch(e) { /* non-critical */ }
-
-        document.getElementById('testArea').style.display = 'block';
-        document.getElementById('patientCard').style.display = 'none';
-        buildProgress();
-        initIshihara();
-        window.scrollTo({ top: document.getElementById('testArea').offsetTop - 80, behavior: 'smooth' });
-    });
-
-    function buildProgress() {
-        const d = document.getElementById('progressDots');
-        d.innerHTML = '';
-        TESTS.forEach((t, i) => {
-            const dot = document.createElement('div');
-            dot.className = 'test-dot' + (i === 0 ? ' active' : '');
-            dot.id = 'dot-' + i;
-            d.appendChild(dot);
-        });
-        updateTitle();
-    }
-    function updateTitle() {
-        document.getElementById('testTitle').textContent = `Test ${currentTest + 1} of ${TESTS.length}`;
-    }
-    function goToTest(idx) {
-        document.querySelectorAll('.test-panel').forEach(p => p.style.display = 'none');
-        document.getElementById('test-' + TESTS[idx]).style.display = 'block';
-        document.querySelectorAll('.test-dot').forEach((d, i) => {
-            d.className = 'test-dot' + (i < idx ? ' done' : '') + (i === idx ? ' active' : '');
-        });
-        currentTest = idx;
-        updateTitle();
-    }
-
-    // ===== Ishihara (Local Plates from blindness test folder) =====
-    const ishiharaPlates = [
-        { img: '/assets/images/blindness test/1-light.png', normal: '1', difficulty: 'light' },
-        { img: '/assets/images/blindness test/1-light2.png', normal: '1', difficulty: 'light' },
-        { img: '/assets/images/blindness test/1-dark.png', normal: '1', difficulty: 'dark' },
-        { img: '/assets/images/blindness test/2-light.png', normal: '2', difficulty: 'light' },
-        { img: '/assets/images/blindness test/2-dark.png', normal: '2', difficulty: 'dark' },
-        { img: '/assets/images/blindness test/3-light.png', normal: '3', difficulty: 'light' },
-        { img: '/assets/images/blindness test/3-med.png', normal: '3', difficulty: 'medium' },
-        { img: '/assets/images/blindness test/3-dark.png', normal: '3', difficulty: 'dark' },
-        { img: '/assets/images/blindness test/4-light.png', normal: '4', difficulty: 'light' },
-        { img: '/assets/images/blindness test/4-light2.png', normal: '4', difficulty: 'light' },
-        { img: '/assets/images/blindness test/4-med.png', normal: '4', difficulty: 'medium' },
-        { img: '/assets/images/blindness test/4-med2.png', normal: '4', difficulty: 'medium' },
-        { img: '/assets/images/blindness test/5-light.png', normal: '5', difficulty: 'light' },
-        { img: '/assets/images/blindness test/5-light (1).png', normal: '5', difficulty: 'light' },
-        { img: '/assets/images/blindness test/5-med.png', normal: '5', difficulty: 'medium' },
-        { img: '/assets/images/blindness test/6-light.png', normal: '6', difficulty: 'light' },
-        { img: '/assets/images/blindness test/6-light2.png', normal: '6', difficulty: 'light' },
-        { img: '/assets/images/blindness test/6-dark.png', normal: '6', difficulty: 'dark' },
-        { img: '/assets/images/blindness test/7-light.png', normal: '7', difficulty: 'light' },
-        { img: '/assets/images/blindness test/7-med.png', normal: '7', difficulty: 'medium' },
-        { img: '/assets/images/blindness test/7-dark.png', normal: '7', difficulty: 'dark' },
-        { img: '/assets/images/blindness test/8-light.png', normal: '8', difficulty: 'light' },
-        { img: '/assets/images/blindness test/8-light2.png', normal: '8', difficulty: 'light' },
-        { img: '/assets/images/blindness test/8-dark.png', normal: '8', difficulty: 'dark' },
-        { img: '/assets/images/blindness test/9-light.png', normal: '9', difficulty: 'light' },
-    ];
-
-    let ishPlateIdx = 0, ishCorrect = 0, ishAnswers = [], ishDone = false, ishInputBuffer = '', ishInputTimeout = null;
-
-    function initIshihara() {
-        ishPlateIdx = 0; ishCorrect = 0; ishAnswers = []; ishDone = false; ishInputBuffer = '';
-        // Shuffle plates randomly (Fisher-Yates)
-        for (let i = ishiharaPlates.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [ishiharaPlates[i], ishiharaPlates[j]] = [ishiharaPlates[j], ishiharaPlates[i]];
-        }
-        document.getElementById('totalPlates').textContent = ishiharaPlates.length;
-        showIshiharaPlate();
-    }
-
-    function showIshiharaPlate() {
-        if (ishPlateIdx >= ishiharaPlates.length) { finishIshihara(); return; }
-        const plate = ishiharaPlates[ishPlateIdx];
-        document.getElementById('ishiharaImg').src = plate.img;
-        document.getElementById('plateCounter').textContent = ishPlateIdx + 1;
-        document.getElementById('ishProgressFill').style.width = ((ishPlateIdx / ishiharaPlates.length) * 100) + '%';
-        ishInputBuffer = '';
-        document.querySelectorAll('.ish-num-btn').forEach(b => { b.disabled = false; b.classList.remove('selected-correct', 'selected-wrong'); });
-    }
-
-    function ishiharaPick(val) {
-        if (ishDone) return;
-        if (val === 'skip') {
-            ishAnswers.push({ plateIdx: ishPlateIdx, given: 'skip', correct: ishiharaPlates[ishPlateIdx].normal, isCorrect: false, type: ishiharaPlates[ishPlateIdx].type });
-            ishPlateIdx++; showIshiharaPlate(); return;
-        }
-        ishInputBuffer += val;
-        const expected = ishiharaPlates[ishPlateIdx].normal;
-        if (expected.length === 1 || ishInputBuffer.length >= 2) { submitIshiharaAnswer(); }
-        else { clearTimeout(ishInputTimeout); ishInputTimeout = setTimeout(() => submitIshiharaAnswer(), 1500); }
-    }
-
-    function submitIshiharaAnswer() {
-        clearTimeout(ishInputTimeout);
-        const plate = ishiharaPlates[ishPlateIdx];
-        const given = ishInputBuffer, expected = plate.normal, isCorrect = given === expected;
-        if (isCorrect) ishCorrect++;
-        ishAnswers.push({ plateIdx: ishPlateIdx, given, correct: expected, isCorrect, type: plate.type, protan: plate.protan, deutan: plate.deutan });
-        document.querySelectorAll('.ish-num-btn').forEach(b => b.disabled = true);
-        setTimeout(() => { ishPlateIdx++; showIshiharaPlate(); }, 600);
-    }
-
-    function ishiharaEnd() {
-        if (ishAnswers.length === 0) { showToast('Please answer at least one plate before ending', 'warning'); return; }
-        finishIshihara();
-    }
-
-    function finishIshihara() {
-        ishDone = true;
-        const total = ishAnswers.length, correct = ishAnswers.filter(a => a.isCorrect).length;
-        const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
-        document.getElementById('ishProgressFill').style.width = '100%';
-
-        let cbType = 'Normal Color Vision', cbSeverity = 'None';
-        if (pct < 80) {
-            cbType = 'Color Vision Deficiency';
-            const missRate = ((total - correct) / total) * 100;
-            if (missRate > 60) cbSeverity = 'Strong';
-            else if (missRate > 30) cbSeverity = 'Moderate';
-            else cbSeverity = 'Mild';
-        }
-
-        results.ishihara = { correct, total, pct, status: pct >= 80 ? 'Normal' : 'Deficient', colorBlindType: cbType, severity: cbSeverity, answers: ishAnswers.map(a => ({ given: a.given, correct: a.correct, isCorrect: a.isCorrect })) };
-
-        const panel = document.getElementById('ishiharaResultsPanel');
-        panel.style.display = 'block';
-        let html = `<p>Plates Answered: <strong>${total}</strong> | Correct: <strong>${correct}</strong> (${pct}%)</p>`;
-        html += `<p>Status: <strong style="color:${pct >= 80 ? '#14b8a6' : '#ef4444'}">${results.ishihara.status}</strong></p>`;
-        if (pct < 80) { html += `<p style="margin-top:8px;">Type: <strong style="color:#ef4444;">${cbType}</strong></p><p>Severity: <strong style="color:#f59e0b;">${cbSeverity}</strong></p>`; }
-        document.getElementById('ishiharaResults').innerHTML = html;
-        document.querySelector('.ish-layout').style.display = 'none';
-        document.querySelector('.ish-note').style.display = 'none';
-    }
-
-    document.getElementById('ishiharaNext').onclick = () => goToTest(1);
-
-    // ===== Snellen =====
-    const snellenRows = [
-        { letters: 'E', size: '5rem', acuity: '20/200' },
-        { letters: 'FP', size: '3.5rem', acuity: '20/100' },
-        { letters: 'TOZ', size: '2.5rem', acuity: '20/70' },
-        { letters: 'LPED', size: '2rem', acuity: '20/50' },
-        { letters: 'PECFD', size: '1.5rem', acuity: '20/40' },
-        { letters: 'EDFCZP', size: '1.1rem', acuity: '20/25' },
-        { letters: 'FELOPZD', size: '0.85rem', acuity: '20/20' },
-    ];
-    let snellenIdx = 0, snellenLastCorrect = '20/200';
-
-    function showSnellen() {
-        const row = snellenRows[snellenIdx];
-        document.getElementById('snellenDisplay').textContent = row.letters;
-        document.getElementById('snellenDisplay').style.fontSize = row.size;
-        document.getElementById('snellenInput').value = '';
-        document.getElementById('snellenInput').focus();
-    }
-    showSnellen();
-
-    document.getElementById('snellenSubmit').onclick = () => {
-        const input = document.getElementById('snellenInput').value.trim().toUpperCase();
-        const row = snellenRows[snellenIdx];
-        if (input === row.letters) { snellenLastCorrect = row.acuity; showToast(`Correct! Acuity: ${row.acuity}`, 'success'); }
-        else { showToast(`Incorrect. The letters were: ${row.letters}`, 'error'); }
-        snellenIdx++;
-        if (snellenIdx < snellenRows.length) { showSnellen(); }
-        else {
-            const isGood = ['20/20', '20/25'].includes(snellenLastCorrect);
-            results.snellen = { acuity: snellenLastCorrect, status: isGood ? 'Normal' : 'Below Normal' };
-            document.getElementById('snellenResults').innerHTML = `Best Acuity: <strong>${snellenLastCorrect}</strong> — <span style="color:${isGood ? '#0d9488' : '#0891b2'}; font-weight:600;">${results.snellen.status}</span>`;
-            document.getElementById('snellenDisplay').textContent = 'Test Complete';
-            document.getElementById('snellenDisplay').style.fontSize = '1.5rem';
-        }
-    };
-    document.getElementById('snellenInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('snellenSubmit').click(); });
-    document.getElementById('snellenNext').onclick = () => goToTest(2);
-
-    // ===== Contrast Sensitivity =====
-    let contrastLvl = 0;
-    const contrastLevels = [0.5, 0.35, 0.25, 0.18, 0.12, 0.08, 0.05, 0.03];
-    const contrastLetters = ['C', 'O', 'D', 'E', 'Z', 'S', 'N', 'K'];
-    let contrastLastSeen = 0;
-
-    function showContrast() {
-        document.getElementById('contrastDisplay').style.color = `rgba(255,255,255,${contrastLevels[contrastLvl]})`;
-        document.getElementById('contrastDisplay').textContent = contrastLetters[contrastLvl];
-        document.getElementById('contrastLevel').textContent = (contrastLvl + 1);
-    }
-    showContrast();
-
-    function contrastAnswer(canSee) {
-        if (canSee) contrastLastSeen = contrastLvl + 1;
-        contrastLvl++;
-        if (contrastLvl < contrastLevels.length) { showContrast(); }
-        else {
-            const pct = Math.round((contrastLastSeen / contrastLevels.length) * 100);
-            const status = contrastLastSeen >= 5 ? 'Normal' : contrastLastSeen >= 3 ? 'Mild Reduction' : 'Significant Reduction';
-            results.contrast = { levelsDetected: contrastLastSeen, total: contrastLevels.length, pct, status };
-            document.getElementById('contrastResults').innerHTML = `Detected ${contrastLastSeen}/${contrastLevels.length} levels (${pct}%) — <span style="color:${contrastLastSeen >= 5 ? '#0d9488' : '#0891b2'}; font-weight:600;">${status}</span>`;
-            document.getElementById('contrastDisplay').textContent = '✓';
-            document.getElementById('contrastDisplay').style.color = '#0d9488';
-        }
-    }
-
-    document.getElementById('contrastNext').onclick = () => goToTest(3);
-
-    // ===== Visual Perception Test (Canvas-based) =====
-    const perceptionQuestions = [
-        // Landolt C - gap detection
-        { type: 'landolt', gapDir: 'right', size: 120, thickness: 20 },
-        { type: 'landolt', gapDir: 'top', size: 100, thickness: 16 },
-        { type: 'landolt', gapDir: 'left', size: 80, thickness: 14 },
-        { type: 'landolt', gapDir: 'bottom', size: 60, thickness: 12 },
-        // Shape counting
-        { type: 'shapes', shape: 'circle', count: 7, distractors: 5 },
-        { type: 'shapes', shape: 'triangle', count: 5, distractors: 8 },
-        // Line orientation
-        { type: 'lines', angle: 45 },
-        { type: 'lines', angle: 135 },
-    ];
-    let percIdx = 0, percCorrect = 0, percAnswers = [];
-
-    function initPerception() {
-        percIdx = 0; percCorrect = 0; percAnswers = [];
-        document.getElementById('percTotal').textContent = perceptionQuestions.length;
-        document.getElementById('percResultsPanel').style.display = 'none';
-        document.getElementById('percOptions').style.display = 'flex';
-        showPerceptionQuestion();
-    }
-
-    function showPerceptionQuestion() {
-        if (percIdx >= perceptionQuestions.length) { finishPerception(); return; }
-        const q = perceptionQuestions[percIdx];
-        document.getElementById('percCounter').textContent = percIdx + 1;
-        document.getElementById('percProgressFill').style.width = ((percIdx / perceptionQuestions.length) * 100) + '%';
-        const canvas = document.getElementById('percCanvas');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const opts = document.getElementById('percOptions');
-        opts.innerHTML = '';
-
-        if (q.type === 'landolt') {
-            drawLandoltC(ctx, canvas.width / 2, canvas.height / 2, q.size, q.thickness, q.gapDir);
-            document.getElementById('percQuestion').textContent = 'Where is the gap in the ring?';
-            ['Top', 'Right', 'Bottom', 'Left'].forEach(dir => {
-                const btn = document.createElement('button');
-                btn.className = 'blind-opt-btn';
-                btn.textContent = dir;
-                btn.style.cssText = 'padding:12px 28px; background:#1e293b; color:#e2e8f0; border:1.5px solid #475569; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit; font-size:0.95rem; min-width:100px;';
-                btn.onclick = () => percAnswer(dir.toLowerCase(), q.gapDir);
-                opts.appendChild(btn);
             });
-        } else if (q.type === 'shapes') {
-            const totalShapes = drawShapeCounting(ctx, canvas, q.shape, q.count, q.distractors);
-            document.getElementById('percQuestion').textContent = `How many ${q.shape}s can you count?`;
-            const correct = q.count;
-            const choices = [correct - 2, correct - 1, correct, correct + 1, correct + 2].filter(n => n > 0);
-            // Shuffle choices
-            choices.sort(() => Math.random() - 0.5);
-            choices.forEach(n => {
-                const btn = document.createElement('button');
-                btn.className = 'blind-opt-btn';
-                btn.textContent = n;
-                btn.style.cssText = 'padding:12px 28px; background:#1e293b; color:#e2e8f0; border:1.5px solid #475569; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit; font-size:1.1rem; min-width:60px;';
-                btn.onclick = () => percAnswer(n.toString(), correct.toString());
-                opts.appendChild(btn);
-            });
-        } else if (q.type === 'lines') {
-            drawLineOrientation(ctx, canvas, q.angle);
-            document.getElementById('percQuestion').textContent = 'What is the orientation of the main line?';
-            const options = [
-                { label: '↗ 45°', val: '45' },
-                { label: '→ 90°', val: '90' },
-                { label: '↘ 135°', val: '135' },
-                { label: '↓ 180°', val: '180' },
-            ];
-            options.forEach(o => {
-                const btn = document.createElement('button');
-                btn.className = 'blind-opt-btn';
-                btn.textContent = o.label;
-                btn.style.cssText = 'padding:12px 28px; background:#1e293b; color:#e2e8f0; border:1.5px solid #475569; border-radius:10px; cursor:pointer; font-weight:600; font-family:inherit; font-size:0.95rem; min-width:80px;';
-                btn.onclick = () => percAnswer(o.val, q.angle.toString());
-                opts.appendChild(btn);
-            });
+            return count;
         }
-    }
 
-    function drawLandoltC(ctx, cx, cy, size, thickness, gapDir) {
-        ctx.strokeStyle = '#e2e8f0';
-        ctx.lineWidth = thickness;
-        const r = size / 2;
-        const gapAngle = { top: -Math.PI / 2, right: 0, bottom: Math.PI / 2, left: Math.PI }[gapDir];
-        const gapSize = 0.4;
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, gapAngle + gapSize, gapAngle + (2 * Math.PI) - gapSize);
-        ctx.stroke();
-    }
+        function drawLineOrientation(ctx, canvas, angle) {
+            const cx = canvas.width / 2, cy = canvas.height / 2;
+            const len = 120;
+            const rad = (angle * Math.PI) / 180;
+            // Main line
+            ctx.strokeStyle = '#facc15';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(cx - Math.cos(rad) * len, cy - Math.sin(rad) * len);
+            ctx.lineTo(cx + Math.cos(rad) * len, cy + Math.sin(rad) * len);
+            ctx.stroke();
+            // Reference cross
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(cx - 140, cy); ctx.lineTo(cx + 140, cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx, cy - 140); ctx.lineTo(cx, cy + 140); ctx.stroke();
+        }
 
-    function drawShapeCounting(ctx, canvas, shape, count, distractors) {
-        const all = [];
-        // Draw target shapes
-        for (let i = 0; i < count; i++) {
-            const x = 30 + Math.random() * (canvas.width - 60);
-            const y = 30 + Math.random() * (canvas.height - 60);
-            all.push({ x, y, isTarget: true });
+        function percAnswer(given, correct) {
+            const isCorrect = given === correct;
+            if (isCorrect) percCorrect++;
+            percAnswers.push({ idx: percIdx, given, correct, isCorrect });
+            // Brief highlight
+            document.querySelectorAll('#percOptions button').forEach(b => b.disabled = true);
+            setTimeout(() => { percIdx++; showPerceptionQuestion(); }, 500);
         }
-        // Draw distractors (different shape)
-        for (let i = 0; i < distractors; i++) {
-            const x = 30 + Math.random() * (canvas.width - 60);
-            const y = 30 + Math.random() * (canvas.height - 60);
-            all.push({ x, y, isTarget: false });
+
+        function finishPerception() {
+            document.getElementById('percProgressFill').style.width = '100%';
+            const total = percAnswers.length;
+            const correct = percCorrect;
+            const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+            let status, severity;
+            if (pct >= 85) { status = 'Normal'; severity = 'None'; }
+            else if (pct >= 60) { status = 'Mild Impairment'; severity = 'Mild'; }
+            else if (pct >= 35) { status = 'Moderate Impairment'; severity = 'Moderate'; }
+            else { status = 'Severe Impairment'; severity = 'Severe'; }
+
+            results.perception = { correct, total, pct, status, severity };
+
+            const panel = document.getElementById('percResultsPanel');
+            panel.style.display = 'block';
+            document.getElementById('percOptions').style.display = 'none';
+            let html = `<p>Questions Answered: <strong>${total}</strong> | Correct: <strong>${correct}</strong> (${pct}%)</p>`;
+            html += `<p>Status: <strong style="color:${status === 'Normal' ? '#14b8a6' : '#f59e0b'}">${status}</strong></p>`;
+            if (severity !== 'None') html += `<p>Severity: <strong style="color:#f59e0b;">${severity}</strong></p>`;
+            document.getElementById('percResults').innerHTML = html;
         }
-        // Shuffle and draw
-        all.sort(() => Math.random() - 0.5);
-        all.forEach(s => {
-            if (s.isTarget && shape === 'circle') {
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, 14, 0, Math.PI * 2);
-                ctx.fillStyle = '#38bdf8';
-                ctx.fill();
-            } else if (s.isTarget && shape === 'triangle') {
-                ctx.beginPath();
-                ctx.moveTo(s.x, s.y - 16);
-                ctx.lineTo(s.x - 14, s.y + 12);
-                ctx.lineTo(s.x + 14, s.y + 12);
-                ctx.closePath();
-                ctx.fillStyle = '#34d399';
-                ctx.fill();
+
+        // Initialize perception test when navigating to it
+        document.getElementById('contrastNext').addEventListener('click', () => { initPerception(); });
+
+        document.getElementById('perceptionNext').onclick = () => generateReport();
+
+        // ===== Report =====
+        function generateReport() {
+            document.querySelectorAll('.test-dot').forEach(d => d.classList.add('done'));
+            document.getElementById('testArea').style.display = 'none';
+            document.getElementById('reportSection').style.display = 'block';
+
+            const pName = document.getElementById('patientName').value.trim();
+            const pId = document.getElementById('patientId').value.trim();
+            document.getElementById('rptName').textContent = pName;
+            document.getElementById('rptPatientId').textContent = pId;
+            document.getElementById('rptDate').textContent = new Date().toLocaleDateString();
+            document.getElementById('rptDoctor').textContent = userName || 'Unknown';
+
+            // Ishihara
+            const ish = results.ishihara;
+            if (ish.correct !== undefined) {
+                let ishHtml = `<p>Plates Correct: <strong>${ish.correct}/${ish.total}</strong> (${ish.pct}%)</p>`;
+                ishHtml += `<p>Status: <strong style="color:${ish.status === 'Normal' ? '#0d9488' : '#1565c0'}">${ish.status}</strong></p>`;
+                if (ish.status !== 'Normal') {
+                    ishHtml += `<div style="margin-top:12px; padding:16px; background:rgba(21,101,192,0.06); border-radius:8px; border-left:4px solid #1565c0;">`;
+                    ishHtml += `<h4 style="margin-bottom:8px; color:#1565c0;">⚠️ Color Blindness Detected</h4>`;
+                    ishHtml += `<strong>Type:</strong> <span style="font-size:1.1rem; color:#1565c0; font-weight:700;">${ish.colorBlindType}</span><br>`;
+                    ishHtml += `<strong>Severity:</strong> ${ish.severity}</div>`;
+                }
+                document.getElementById('rptIshihara').innerHTML = ishHtml;
+            } else { document.getElementById('rptIshihara').innerHTML = '<p style="color:#0891b2;">Test not completed</p>'; }
+
+            // Snellen
+            const sn = results.snellen;
+            document.getElementById('rptSnellen').innerHTML = sn.acuity
+                ? `<p>Best Acuity: <strong>${sn.acuity}</strong></p><p>Status: <strong style="color:${sn.status === 'Normal' ? '#0d9488' : '#0891b2'}">${sn.status}</strong></p>`
+                : '<p style="color:#0891b2;">Test not completed</p>';
+
+            // Contrast
+            const ct = results.contrast;
+            document.getElementById('rptContrast').innerHTML = ct.levelsDetected !== undefined
+                ? `<p>Levels Detected: <strong>${ct.levelsDetected}/${ct.total}</strong> (${ct.pct}%)</p><p>Status: <strong style="color:${ct.status === 'Normal' ? '#0d9488' : '#0891b2'}">${ct.status}</strong></p>`
+                : '<p style="color:#0891b2;">Test not completed</p>';
+
+            // Visual Perception
+            const perc = results.perception;
+            if (perc.total) {
+                let percHtml = `<p>Correct: <strong>${perc.correct}/${perc.total}</strong> (${perc.pct}%)</p>`;
+                percHtml += `<p>Status: <strong style="color:${perc.status === 'Normal' ? '#0d9488' : '#0891b2'}">${perc.status}</strong></p>`;
+                if (perc.severity !== 'None') percHtml += `<p>Severity: <strong style="color:#0891b2;">${perc.severity}</strong></p>`;
+                document.getElementById('rptBlindness').innerHTML = percHtml;
+            } else { document.getElementById('rptBlindness').innerHTML = '<p style="color:#0891b2;">Test not completed</p>'; }
+
+            // Overall
+            const issues = [];
+            if (ish.status === 'Deficient') issues.push('Color vision deficiency: ' + ish.colorBlindType + ' (' + ish.severity + ')');
+            if (sn.status === 'Below Normal') issues.push('Reduced visual acuity (' + sn.acuity + ')');
+            if (ct.status !== 'Normal' && ct.status) issues.push('Contrast sensitivity: ' + ct.status);
+            if (perc.status && perc.status !== 'Normal') issues.push('Visual perception: ' + perc.status + ' (' + perc.severity + ')');
+
+            document.getElementById('rptOverall').innerHTML = issues.length === 0
+                ? '<p style="color:#0d9488; font-weight:700;">All tests within normal range. No immediate concerns detected.</p>'
+                : '<ul style="padding-left:20px; list-style:disc;">' + issues.map(i => '<li style="color:#0891b2; margin-bottom:6px;">' + i + '</li>').join('') + '</ul><p style="margin-top:12px;">Recommend follow-up with an ophthalmologist for further evaluation.</p>';
+
+            // Doctor notes access (4-role RBAC)
+            if (userRole === 'doctor') {
+                document.getElementById('doctorNotes').disabled = false;
+                document.getElementById('saveNotesBtn').style.display = 'inline-block';
+                document.getElementById('notesAccessLabel').textContent = 'Add your clinical observations';
+            } else if (userRole === 'superadmin' || userRole === 'admin') {
+                document.getElementById('doctorNotes').disabled = false;
+                document.getElementById('saveNotesBtn').style.display = 'inline-block';
+                document.getElementById('notesAccessLabel').textContent = 'Administrative review';
             } else {
-                // Distractor: squares
-                ctx.fillStyle = '#f472b6';
-                ctx.fillRect(s.x - 10, s.y - 10, 20, 20);
+                document.getElementById('notesAccessLabel').textContent = 'Only doctors can add notes (read-only)';
             }
-        });
-        return count;
-    }
 
-    function drawLineOrientation(ctx, canvas, angle) {
-        const cx = canvas.width / 2, cy = canvas.height / 2;
-        const len = 120;
-        const rad = (angle * Math.PI) / 180;
-        // Main line
-        ctx.strokeStyle = '#facc15';
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(cx - Math.cos(rad) * len, cy - Math.sin(rad) * len);
-        ctx.lineTo(cx + Math.cos(rad) * len, cy + Math.sin(rad) * len);
-        ctx.stroke();
-        // Reference cross
-        ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(cx - 140, cy); ctx.lineTo(cx + 140, cy); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(cx, cy - 140); ctx.lineTo(cx, cy + 140); ctx.stroke();
-    }
+            document.getElementById('saveNotesBtn').onclick = () => {
+                const history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
+                const lastEntry = history[history.length - 1];
+                if (lastEntry) { lastEntry.doctorNotes = document.getElementById('doctorNotes').value; localStorage.setItem('eyeTestHistory', JSON.stringify(history)); }
+                showToast('Notes saved successfully', 'success');
+            };
 
-    function percAnswer(given, correct) {
-        const isCorrect = given === correct;
-        if (isCorrect) percCorrect++;
-        percAnswers.push({ idx: percIdx, given, correct, isCorrect });
-        // Brief highlight
-        document.querySelectorAll('#percOptions button').forEach(b => b.disabled = true);
-        setTimeout(() => { percIdx++; showPerceptionQuestion(); }, 500);
-    }
-
-    function finishPerception() {
-        document.getElementById('percProgressFill').style.width = '100%';
-        const total = percAnswers.length;
-        const correct = percCorrect;
-        const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
-        let status, severity;
-        if (pct >= 85) { status = 'Normal'; severity = 'None'; }
-        else if (pct >= 60) { status = 'Mild Impairment'; severity = 'Mild'; }
-        else if (pct >= 35) { status = 'Moderate Impairment'; severity = 'Moderate'; }
-        else { status = 'Severe Impairment'; severity = 'Severe'; }
-
-        results.perception = { correct, total, pct, status, severity };
-
-        const panel = document.getElementById('percResultsPanel');
-        panel.style.display = 'block';
-        document.getElementById('percOptions').style.display = 'none';
-        let html = `<p>Questions Answered: <strong>${total}</strong> | Correct: <strong>${correct}</strong> (${pct}%)</p>`;
-        html += `<p>Status: <strong style="color:${status === 'Normal' ? '#14b8a6' : '#f59e0b'}">${status}</strong></p>`;
-        if (severity !== 'None') html += `<p>Severity: <strong style="color:#f59e0b;">${severity}</strong></p>`;
-        document.getElementById('percResults').innerHTML = html;
-    }
-
-    // Initialize perception test when navigating to it
-    document.getElementById('contrastNext').addEventListener('click', () => { initPerception(); });
-
-    document.getElementById('perceptionNext').onclick = () => generateReport();
-
-    // ===== Report =====
-    function generateReport() {
-        document.querySelectorAll('.test-dot').forEach(d => d.classList.add('done'));
-        document.getElementById('testArea').style.display = 'none';
-        document.getElementById('reportSection').style.display = 'block';
-
-        const pName = document.getElementById('patientName').value.trim();
-        const pId = document.getElementById('patientId').value.trim();
-        document.getElementById('rptName').textContent = pName;
-        document.getElementById('rptPatientId').textContent = pId;
-        document.getElementById('rptDate').textContent = new Date().toLocaleDateString();
-        document.getElementById('rptDoctor').textContent = userName || 'Unknown';
-
-        // Ishihara
-        const ish = results.ishihara;
-        if (ish.correct !== undefined) {
-            let ishHtml = `<p>Plates Correct: <strong>${ish.correct}/${ish.total}</strong> (${ish.pct}%)</p>`;
-            ishHtml += `<p>Status: <strong style="color:${ish.status==='Normal'?'#0d9488':'#1565c0'}">${ish.status}</strong></p>`;
-            if (ish.status !== 'Normal') {
-                ishHtml += `<div style="margin-top:12px; padding:16px; background:rgba(21,101,192,0.06); border-radius:8px; border-left:4px solid #1565c0;">`;
-                ishHtml += `<h4 style="margin-bottom:8px; color:#1565c0;">⚠️ Color Blindness Detected</h4>`;
-                ishHtml += `<strong>Type:</strong> <span style="font-size:1.1rem; color:#1565c0; font-weight:700;">${ish.colorBlindType}</span><br>`;
-                ishHtml += `<strong>Severity:</strong> ${ish.severity}</div>`;
-            }
-            document.getElementById('rptIshihara').innerHTML = ishHtml;
-        } else { document.getElementById('rptIshihara').innerHTML = '<p style="color:#0891b2;">Test not completed</p>'; }
-
-        // Snellen
-        const sn = results.snellen;
-        document.getElementById('rptSnellen').innerHTML = sn.acuity
-            ? `<p>Best Acuity: <strong>${sn.acuity}</strong></p><p>Status: <strong style="color:${sn.status==='Normal'?'#0d9488':'#0891b2'}">${sn.status}</strong></p>`
-            : '<p style="color:#0891b2;">Test not completed</p>';
-
-        // Contrast
-        const ct = results.contrast;
-        document.getElementById('rptContrast').innerHTML = ct.levelsDetected !== undefined
-            ? `<p>Levels Detected: <strong>${ct.levelsDetected}/${ct.total}</strong> (${ct.pct}%)</p><p>Status: <strong style="color:${ct.status==='Normal'?'#0d9488':'#0891b2'}">${ct.status}</strong></p>`
-            : '<p style="color:#0891b2;">Test not completed</p>';
-
-        // Visual Perception
-        const perc = results.perception;
-        if (perc.total) {
-            let percHtml = `<p>Correct: <strong>${perc.correct}/${perc.total}</strong> (${perc.pct}%)</p>`;
-            percHtml += `<p>Status: <strong style="color:${perc.status==='Normal'?'#0d9488':'#0891b2'}">${perc.status}</strong></p>`;
-            if (perc.severity !== 'None') percHtml += `<p>Severity: <strong style="color:#0891b2;">${perc.severity}</strong></p>`;
-            document.getElementById('rptBlindness').innerHTML = percHtml;
-        } else { document.getElementById('rptBlindness').innerHTML = '<p style="color:#0891b2;">Test not completed</p>'; }
-
-        // Overall
-        const issues = [];
-        if (ish.status === 'Deficient') issues.push('Color vision deficiency: ' + ish.colorBlindType + ' (' + ish.severity + ')');
-        if (sn.status === 'Below Normal') issues.push('Reduced visual acuity (' + sn.acuity + ')');
-        if (ct.status !== 'Normal' && ct.status) issues.push('Contrast sensitivity: ' + ct.status);
-        if (perc.status && perc.status !== 'Normal') issues.push('Visual perception: ' + perc.status + ' (' + perc.severity + ')');
-
-        document.getElementById('rptOverall').innerHTML = issues.length === 0
-            ? '<p style="color:#0d9488; font-weight:700;">All tests within normal range. No immediate concerns detected.</p>'
-            : '<ul style="padding-left:20px; list-style:disc;">' + issues.map(i => '<li style="color:#0891b2; margin-bottom:6px;">' + i + '</li>').join('') + '</ul><p style="margin-top:12px;">Recommend follow-up with an ophthalmologist for further evaluation.</p>';
-
-        // Doctor notes access (4-role RBAC)
-        if (userRole === 'doctor') {
-            document.getElementById('doctorNotes').disabled = false;
-            document.getElementById('saveNotesBtn').style.display = 'inline-block';
-            document.getElementById('notesAccessLabel').textContent = 'Add your clinical observations';
-        } else if (userRole === 'superadmin' || userRole === 'admin') {
-            document.getElementById('doctorNotes').disabled = false;
-            document.getElementById('saveNotesBtn').style.display = 'inline-block';
-            document.getElementById('notesAccessLabel').textContent = 'Administrative review';
-        } else {
-            document.getElementById('notesAccessLabel').textContent = 'Only doctors can add notes (read-only)';
-        }
-
-        document.getElementById('saveNotesBtn').onclick = () => {
+            // Save to localStorage
+            const testEntry = {
+                id: Date.now(),
+                patientName: pName,
+                patientId: pId,
+                date: new Date().toLocaleDateString(),
+                screenedBy: userName || 'Unknown',
+                ishihara: results.ishihara,
+                snellen: results.snellen,
+                contrast: results.contrast,
+                blindness: results.blindness,
+                overallStatus: issues.length === 0 ? 'Normal' : 'Issues Found',
+                overallIssues: issues,
+                doctorNotes: ''
+            };
             const history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
-            const lastEntry = history[history.length - 1];
-            if (lastEntry) { lastEntry.doctorNotes = document.getElementById('doctorNotes').value; localStorage.setItem('eyeTestHistory', JSON.stringify(history)); }
-            showToast('Notes saved successfully', 'success');
-        };
+            history.push(testEntry);
+            localStorage.setItem('eyeTestHistory', JSON.stringify(history));
 
-        // Save to localStorage
-        const testEntry = {
-            id: Date.now(),
-            patientName: pName,
-            patientId: pId,
-            date: new Date().toLocaleDateString(),
-            screenedBy: userName || 'Unknown',
-            ishihara: results.ishihara,
-            snellen: results.snellen,
-            contrast: results.contrast,
-            blindness: results.blindness,
-            overallStatus: issues.length === 0 ? 'Normal' : 'Issues Found',
-            overallIssues: issues,
-            doctorNotes: ''
-        };
-        const history = JSON.parse(localStorage.getItem('eyeTestHistory') || '[]');
-        history.push(testEntry);
-        localStorage.setItem('eyeTestHistory', JSON.stringify(history));
-
-        showToast('Report generated & saved to history', 'success');
-        window.scrollTo({ top: document.getElementById('reportSection').offsetTop - 80, behavior: 'smooth' });
-    }
+            showToast('Report generated & saved to history', 'success');
+            window.scrollTo({ top: document.getElementById('reportSection').offsetTop - 80, behavior: 'smooth' });
+        }
     </script>
 </body>
+
 </html>

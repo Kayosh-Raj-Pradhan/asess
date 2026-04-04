@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/dashboard.css">
 </head>
+
 <body class="bg-capture">
     <div id="main-wrapper">
         <div id="header-placeholder"></div>
@@ -24,16 +26,14 @@
                 <div>
                     <!-- Patient Info -->
                     <div class="card" style="padding:24px;">
-                        <h3 style="margin-bottom:16px;"><i class="ri-user-line" style="margin-right:6px;"></i> Patient Information</h3>
-                        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
-                            <div style="flex:1; min-width:180px;">
-                                <label style="display:block; margin-bottom:4px; font-size:0.82rem; font-weight:600; color:#475569;">Patient Name *</label>
-                                <input type="text" id="patientName" class="form-input" placeholder="Enter patient name" required style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
-                            </div>
-                            <div style="flex:1; min-width:180px;">
-                                <label style="display:block; margin-bottom:4px; font-size:0.82rem; font-weight:600; color:#475569;">Patient ID <span style="font-size:0.75rem; color:#1565c0; background:#e0f2fe; padding:1px 8px; border-radius:10px; margin-left:4px;">Auto-generated</span></label>
-                                <input type="text" id="patientId" class="form-input" readonly style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem; background:#f0f4ff; color:#1565c0; font-weight:600; cursor:not-allowed;">
-                            </div>
+                        <h3 style="margin-bottom:16px;"><i class="ri-user-line" style="margin-right:6px;"></i> Patient
+                            Information</h3>
+                        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                            <input type="text" id="patientName" class="form-input" placeholder="Patient Name *" required
+                                style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
+                            <input type="text" id="patientId" class="form-input"
+                                placeholder="Patient ID * (e.g. ABC123)" required
+                                style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #d1d5db; font-size:0.95rem;">
                         </div>
                     </div>
 
@@ -55,7 +55,8 @@
                         <div style="display:flex; gap:10px; margin-top:12px; justify-content:center;">
                             <button class="btn btn-primary" id="startCamBtn">Start Camera</button>
                             <button class="btn btn-primary" id="captureCamBtn" style="display:none;">Capture</button>
-                            <button class="btn btn-primary" id="stopCamBtn" style="display:none; background:#dc2626;">Stop</button>
+                            <button class="btn btn-primary" id="stopCamBtn"
+                                style="display:none; background:#dc2626;">Stop</button>
                         </div>
                     </div>
                 </div>
@@ -67,18 +68,24 @@
                     <img class="captured-img" id="imagePreview" style="display:none;" alt="Preview">
 
                     <div style="margin-top:20px;">
-                        <textarea id="aiNotes" class="form-input" style="width:100%; height:80px; padding:10px; border-radius:8px; border:1px solid #d1d5db;" placeholder="Enter clinical notes (optional)..."></textarea>
+                        <textarea id="aiNotes" class="form-input"
+                            style="width:100%; height:80px; padding:10px; border-radius:8px; border:1px solid #d1d5db;"
+                            placeholder="Enter clinical notes (optional)..."></textarea>
                     </div>
 
                     <!-- AI Result Preview -->
-                    <div id="aiResultCard" style="display:none; margin-top:20px; padding:20px; background:linear-gradient(135deg,#e0f2fe,#f0fdf4); border-radius:12px; border:1px solid #bae6fd;">
+                    <div id="aiResultCard"
+                        style="display:none; margin-top:20px; padding:20px; background:linear-gradient(135deg,#e0f2fe,#f0fdf4); border-radius:12px; border:1px solid #bae6fd;">
                         <h4 style="margin:0 0 12px; color:#0f766e;"><i class="ri-robot-line"></i> AI Prediction</h4>
-                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                             <span id="aiPrediction" style="font-size:1.3rem; font-weight:700; color:#1a2e5a;"></span>
                             <span id="aiConfidence" style="font-size:1.1rem; font-weight:600; color:#0f766e;"></span>
                         </div>
                         <div id="aiProbBars" style="margin-top:16px;"></div>
-                        <a id="viewReportLink" href="#" class="btn btn-primary" style="margin-top:16px; display:inline-block; padding:10px 24px; font-size:0.9rem;">View Full Report →</a>
+                        <a id="viewReportLink" href="#" class="btn btn-primary"
+                            style="margin-top:16px; display:inline-block; padding:10px 24px; font-size:0.9rem;">View
+                            Full Report →</a>
                     </div>
 
                     <div class="analyze-btn-wrap" style="margin-top:20px;">
@@ -98,7 +105,7 @@
     <script src="/js/script.js"></script>
     <script>
         // Role guard: superadmin and doctor cannot access New Scan
-        (function() {
+        (function () {
             const token = localStorage.getItem('access_token');
             if (token) {
                 try {
@@ -107,7 +114,7 @@
                         window.location.href = '/index';
                         return;
                     }
-                } catch(e) {}
+                } catch (e) { }
             }
         })();
 
@@ -122,37 +129,6 @@
         const stopCamBtn = document.getElementById('stopCamBtn');
         const analyzeBtn = document.getElementById('analyzeBtn');
         let stream = null;
-
-        // ───── Auto-generate Patient ID or pre-fill from URL (Scan Again) ─────
-        (async function initPatientInfo() {
-            const params = new URLSearchParams(window.location.search);
-            const urlName = params.get('patientName');
-            const urlId = params.get('patientId');
-
-            if (urlName && urlId) {
-                // "Scan Again" flow: pre-fill with existing patient data
-                document.getElementById('patientName').value = urlName;
-                document.getElementById('patientId').value = urlId;
-                document.getElementById('patientName').setAttribute('readonly', true);
-                document.getElementById('patientName').style.background = '#f0f4ff';
-                document.getElementById('patientName').style.color = '#1565c0';
-                document.getElementById('patientName').style.fontWeight = '600';
-                document.getElementById('patientName').style.cursor = 'not-allowed';
-            } else {
-                // New scan: auto-generate next patient ID
-                try {
-                    const resp = await fetch('/ai/next-patient-id');
-                    if (resp.ok) {
-                        const data = await resp.json();
-                        document.getElementById('patientId').value = data.patient_id;
-                    } else {
-                        document.getElementById('patientId').value = 'PAT' + String(Date.now() % 1000).padStart(3, '0');
-                    }
-                } catch(e) {
-                    document.getElementById('patientId').value = 'PAT' + String(Date.now() % 1000).padStart(3, '0');
-                }
-            }
-        })();
 
         // Upload
         uploadArea.addEventListener('click', () => imageInput.click());
@@ -215,7 +191,13 @@
                 return;
             }
             if (!patientId) {
-                showToast("Patient ID not generated. Please refresh.", "warning");
+                showToast("Please enter patient ID", "warning");
+                document.getElementById('patientId').focus();
+                return;
+            }
+            if (!/^[A-Za-z]{3}[0-9]{3}$/.test(patientId)) {
+                showToast("Patient ID must be 3 letters + 3 numbers (e.g. ABC123)", "warning");
+                document.getElementById('patientId').focus();
                 return;
             }
             if (!imagePreview.src || imagePreview.style.display === 'none') {
@@ -250,7 +232,7 @@
                     try {
                         const user = await apiRequest('/users/me', 'GET');
                         screenedBy = user.full_name || user.username || 'System';
-                    } catch(e) {}
+                    } catch (e) { }
                 }
                 formData.append('screened_by', screenedBy);
 
@@ -276,7 +258,7 @@
                 const barsContainer = document.getElementById('aiProbBars');
                 barsContainer.innerHTML = '';
                 if (result.all_probabilities) {
-                    const sorted = Object.entries(result.all_probabilities).sort((a,b) => b[1] - a[1]);
+                    const sorted = Object.entries(result.all_probabilities).sort((a, b) => b[1] - a[1]);
                     sorted.forEach(([cls, pct]) => {
                         const color = cls === 'Normal' ? '#16a34a' : (pct > 50 ? '#ef4444' : '#1565c0');
                         barsContainer.innerHTML += `
@@ -304,4 +286,5 @@
         });
     </script>
 </body>
+
 </html>

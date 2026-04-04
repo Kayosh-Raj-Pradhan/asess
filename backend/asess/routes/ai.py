@@ -99,55 +99,6 @@ async def predict_eye_disease(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
 
-# ──────────────── Auto-generate Patient ID ────────────────
-
-@router.get("/next-patient-id")
-def get_next_patient_id(db: Session = Depends(get_db)):
-    """Generate the next available patient ID in PAT### format."""
-    patients = db.query(Patient).filter(
-        Patient.patient_id.like("PAT%")
-    ).all()
-
-    max_num = 0
-    for p in patients:
-        try:
-            num_str = p.patient_id[3:]
-            if num_str.isdigit():
-                num = int(num_str)
-                if num > max_num:
-                    max_num = num
-        except (ValueError, IndexError):
-            pass
-
-    next_num = max_num + 1
-    return {"patient_id": f"PAT{next_num:03d}"}
-
-
-# ──────────────── Register Patient (for Eye Test) ────────────────
-
-@router.post("/register-patient")
-async def register_patient(
-    patient_name: str = Form(...),
-    patient_id: str = Form(...),
-    created_by: str = Form(None),
-    db: Session = Depends(get_db)
-):
-    """Register a patient if not already existing (used by eye test flow)."""
-    existing = db.query(Patient).filter(Patient.patient_id == patient_id.upper()).first()
-    if existing:
-        return {"patient_id": existing.patient_id, "patient_name": existing.patient_name, "status": "exists"}
-
-    new_patient = Patient(
-        patient_id=patient_id.upper(),
-        patient_name=patient_name,
-        created_by=created_by or "System"
-    )
-    db.add(new_patient)
-    db.commit()
-    db.refresh(new_patient)
-    return {"patient_id": new_patient.patient_id, "patient_name": new_patient.patient_name, "status": "created"}
-
-
 # ──────────────── Get All Scans (History) ────────────────
 
 @router.get("/scans")
